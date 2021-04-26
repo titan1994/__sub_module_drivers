@@ -197,7 +197,7 @@ class KafkaProducerConfluent:
     Инициализация
     """
 
-    def __init__(self, configuration=None, use_tx=False, one_topic_name=None):
+    def __init__(self, hosts=None, configuration=None, use_tx=False, one_topic_name=None):
         """
 
         :param configuration:
@@ -206,7 +206,6 @@ class KafkaProducerConfluent:
 
         if configuration is None:
             self.configuration = {
-                'bootstrap.servers': GeneralConfig.KAFKA_URL,
                 'client.id': default_cfg.DEFAULT_CONNECTION_OPTION_ADMIN['client_id'],
                 'socket.timeout.ms': default_cfg.DEFAULT_BROKER_TIMEOUT_MS_OPERATIONS
             }
@@ -215,6 +214,12 @@ class KafkaProducerConfluent:
                 self.configuration['transactional.id'] = str(uuid4())
         else:
             self.configuration = configuration
+
+        if hosts:
+            self.configuration['bootstrap.servers'] = hosts
+        else:
+            if not self.configuration.get('bootstrap.servers'):
+                self.configuration['bootstrap.servers'] = GeneralConfig.KAFKA_URL
 
         self.use_tx = use_tx
         self.topic_part_itr = None
@@ -391,7 +396,8 @@ class KafkaConsumer:
             self,
             topic_name,
             msg_processor,
-            async_core=False,
+            hosts=None,
+            # async_core=False,
             async_task_process=False,
             auto_commit_ms=None,
             batch_commit_size=None,
@@ -404,8 +410,9 @@ class KafkaConsumer:
 
         :param topic_name: - один топик строкой или несколько топиков списком.
         :param msg_processor: - def msg_processor(consumer, id_thread, msgs, **kwargs). Обработчик сообщений
+        :param hosts: - Адреса брокера строкой через запятую, если не указаны - то по умолчанию
 
-        :param async_core: - выбор варианта чтения топиков True асинхронный/False синхронный
+        # :param async_core: - выбор варианта чтения топиков True асинхронный/False синхронный - FALSE ONLY!
         :param async_task_process: - обработка данных в отдельном асинхронном планировщике
 
         :param auto_commit_ms: задать, если необходимо автоматически коммитить прочитанные сообщения
@@ -443,8 +450,8 @@ class KafkaConsumer:
                 # Асинхронная библиотека
 
                 self.configuration = {
-                    'bootstrap_servers': GeneralConfig.KAFKA_URL,
-                    'session_timeout_ms': default_cfg.DEFAULT_BROKER_TIMEOUT_MS_OPERATIONS
+                    # 'bootstrap_servers': GeneralConfig.KAFKA_URL,
+                    'session_timeout_ms': default_cfg.DEFAULT_BROKER_TIMEOUT_MS_OPERATIONS,
                 }
 
                 if auto_commit_ms:
@@ -459,8 +466,8 @@ class KafkaConsumer:
                 # Синхронная библиотека
 
                 self.configuration = {
-                    'bootstrap.servers': GeneralConfig.KAFKA_URL,
-                    'socket.timeout.ms': default_cfg.DEFAULT_BROKER_TIMEOUT_MS_OPERATIONS
+                    # 'bootstrap.servers': GeneralConfig.KAFKA_URL,
+                    'socket.timeout.ms': default_cfg.DEFAULT_BROKER_TIMEOUT_MS_OPERATIONS,
                 }
 
                 if auto_commit_ms:
@@ -475,6 +482,17 @@ class KafkaConsumer:
             # Конфигурация пользователя
 
             self.configuration = configuration
+
+        if async_core:
+            key_hosts = 'bootstrap_servers'
+        else:
+            key_hosts = 'bootstrap.servers'
+
+        if not self.configuration.get(key_hosts):
+            if hosts:
+                self.configuration[key_hosts] = hosts
+            else:
+                self.configuration[key_hosts] = GeneralConfig.KAFKA_URL
 
         if isinstance(topic_name, str):
             self.topic_name = [topic_name]
