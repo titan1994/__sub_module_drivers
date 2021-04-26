@@ -28,8 +28,8 @@ services:
       ZOO_SERVERS: server.1=zookeeper:2888:3888
 
     volumes:
-      - ./__docker/volumes/kafka/zoo/data:/data
-      - ./__docker/volumes/kafka/zoo/log:/datalog
+      - ./__docker/volumes/kafka_proc/zoo/data:/data
+      - ./__docker/volumes/kafka_proc/zoo/log:/datalog
 
 
     # внешняя сеть
@@ -39,7 +39,7 @@ services:
   # Первый брокер - полноценный контейнер кафки порт 9091
 
   kafka1:
-    image: confluentinc/cp-kafka:5.3.0
+    image: confluentinc/cp-kafka_proc:5.3.0
     hostname: kafka1
     container_name: kafka1
     restart: on-failure
@@ -56,7 +56,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
     volumes:
-      - ./__docker/volumes/kafka/k1:/var/lib/kafka/data
+      - ./__docker/volumes/kafka_proc/k1:/var/lib/kafka_proc/data
 
 
     # внешняя сеть
@@ -69,7 +69,7 @@ services:
 
   kafka2:
 
-    image: confluentinc/cp-kafka:5.3.0
+    image: confluentinc/cp-kafka_proc:5.3.0
     hostname: kafka2
     container_name: kafka2
     restart: on-failure
@@ -86,7 +86,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
     volumes:
-      - ./__docker/volumes/kafka/k2:/var/lib/kafka/data
+      - ./__docker/volumes/kafka_proc/k2:/var/lib/kafka_proc/data
 
 
     # внешняя сеть
@@ -100,7 +100,7 @@ services:
 
   kafka3:
 
-    image: confluentinc/cp-kafka:5.3.0
+    image: confluentinc/cp-kafka_proc:5.3.0
     hostname: kafka3
     container_name: kafka3
     restart: on-failure
@@ -117,7 +117,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
     volumes:
-      - ./__docker/volumes/kafka/k3:/var/lib/kafka/data
+      - ./__docker/volumes/kafka_proc/k3:/var/lib/kafka_proc/data
 
 
     # внешняя сеть

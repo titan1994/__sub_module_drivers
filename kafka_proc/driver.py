@@ -35,7 +35,7 @@ class ErrorKafkaAdmin(Exception):
 
 class KafkaAdmin:
     """
-    Администрирование кафки через библиотеку kafka-python
+    Администрирование кафки через библиотеку kafka_proc-python
     1. Управление топиками
     """
 

@@ -4,7 +4,7 @@ pip-log.txt
 pyvenv.cfg
 __pycache__/
 requirements.txt
-
+MODS
 
 # MacOS
 .DS_Store
@@ -30,3 +30,22 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# DOCKER VOLUMES. KAFKA
+
+__docker/volumes/kafka/k1/*
+!__docker/volumes/kafka/k1/.gitkeep
+
+__docker/volumes/kafka/k2/*
+!__docker/volumes/kafka/k2/.gitkeep
+
+__docker/volumes/kafka/k3/*
+!__docker/volumes/kafka/k3/.gitkeep
+
+__docker/volumes/kafka/zoo/data/*
+!__docker/volumes/kafka/zoo/data/.gitkeep
+
+__docker/volumes/kafka/zoo/log/*
+!__docker/volumes/kafka/zoo/log/.gitkeep
+
+
