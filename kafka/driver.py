@@ -18,7 +18,13 @@ from . import default_cfg
 from kafka.admin import KafkaAdminClient as DefaultAdminKafka, NewTopic
 from confluent_kafka import Producer, Consumer
 from confluent_kafka.admin import AdminClient, NewTopic as NewTopicConf
-from aiokafka import AIOKafkaConsumer
+
+
+# Удалено! Работает плохо!
+# from aiokafka import AIOKafkaConsumer
+class AIOKafkaConsumer:
+    pass
+
 
 from GENERAL_CONFIG import GeneralConfig
 
@@ -480,7 +486,9 @@ class KafkaConsumer:
         else:
             self.auto_commit = False
 
-        self.async_core = async_core
+        # self.async_core = async_core
+        self.async_core = False  # Всегда используем конфлюент (Есть конфликты с фаустом)
+
         self.async_task_process = async_task_process
         self.one_client = one_client
         self.batch_commit_size = batch_commit_size

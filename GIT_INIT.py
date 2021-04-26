@@ -54,10 +54,16 @@ def run_with_info(cmd):
 
 if INIT_TRUE_OR_DELETE_FALSE:
     # Добавляем файл-пустышку в MODS
-    makedirs(GEN_MOD_FOLDER)
+    try:
+        makedirs(GEN_MOD_FOLDER)
+    except Exception as exp:
+        print(exp)
 
-    with open(Path(GEN_MOD_FOLDER) / '.gitignore', 'w'):
-        pass
+    try:
+        with open(Path(GEN_MOD_FOLDER) / '.gitignore', 'w'):
+            pass
+    except Exception as exp:
+        print(exp)
 
     # Подключаем модули
     for sub_module, mpath in submodules.items():
