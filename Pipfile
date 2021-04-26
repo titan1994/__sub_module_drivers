@@ -1,0 +1,44 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+
+# DOT ENV
+python-dotenv = "*"
+
+#__SUB__EasyScripts__
+jinja2 = "*"
+dictdiffer = "*"
+
+#__SUB__DRIVERS__
+
+#DATA BASE FRIVERS
+psycopg2 = "*"
+SQLAlchemy = "*"
+asyncpg = "*"
+asynch = "*"
+
+
+# EXEL XLSX Driver
+openpyxl = "*"
+Pillow = "*"
+pandas = "*"
+lxml = "*"
+XlsxWriter = "*"
+
+# KAFKA
+pykafka = "*"
+kafka-python = "*"
+confluent-kafka = "*"
+
+# Network
+requests = "*"
+faker = "*"
+httpx = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"

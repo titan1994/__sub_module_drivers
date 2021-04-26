@@ -1,0 +1,18 @@
+[
+   {
+      "name":"Тестовый яндекс",
+      "comment":"my crazy yandex",
+      "type_db":"ycl",
+      "ip":"localhost",
+      "port":"9000",
+      "data_bases":[
+         {
+            "name":"default",
+            "user":"default",
+            "pswd":"",
+            "tables":[
+            ]
+         }
+      ]
+   }
+  ]

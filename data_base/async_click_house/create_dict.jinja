@@ -1,0 +1,18 @@
+CREATE DICTIONARY IF NOT EXISTS {% if db_name %}{{db_name}}.{% endif %}{{name_dict}} {% if cluster %}ON CLUSTER {{cluster}}{% endif %}(
+    {% set ns = namespace(first=False)  %}
+    {% for name, field in fields.items() %}{% if ns.first %},
+    {% else %}{% set ns.first = True %}{% endif%}{{name}} {{field['type']}} {% endfor %}
+)
+PRIMARY KEY {% set ns = namespace(first=False) %}{% for key in primary_keys %}{% if ns.first %},{% else %}{% set ns.first = True %}{% endif%}{{key}}{% endfor %}
+SOURCE(
+    {% for name, params in sources.items() %}
+    {{name}} (
+        {% for key, val in params.items() %}
+        {{key}} {{val}}
+        {% endfor %}
+    )
+    {% endfor %}
+)
+LAYOUT({{lay_out}})
+LIFETIME({{life_time}})
+;

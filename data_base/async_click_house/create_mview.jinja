@@ -1,0 +1,9 @@
+CREATE MATERIALIZED VIEW IF NOT EXISTS {% if db_name %}{{db_name}}.{% endif %}{{view_name}}
+{% if cluster %}ON CLUSTER {{cluster}}{% endif %}
+TO {{table_dst}} AS
+SELECT {% set ns = namespace(first=False)  %}
+    {% for column, expr in columns.items() %}{% if ns.first %},
+    {% else %}{% set ns.first = True %}{% endif%}{{expr}} as {{column}}{% endfor %}
+FROM
+    {{table_src}}
+

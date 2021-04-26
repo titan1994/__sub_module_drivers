@@ -1,0 +1,59 @@
+CREATE TABLE IF NOT EXISTS {% if db_name %}{{db_name}}.{% endif %}{{table_name}} {% if cluster %}ON CLUSTER {{cluster}}{% endif %}
+(
+    {% set ns = namespace(first=False)  %}
+    {% for name, data_column in columns.items() %}{% if ns.first %},
+    {% else %}{% set ns.first = True %}{% endif%}{{name}} {{data_column['type']}} {{data_column['dma']}} {{data_column['ttl']}} {% if data_column.get('comment')%} comment '{{data_column['comment']}}' {% endif %}{% endfor %}
+
+    {% if index %}
+    {% set ns = namespace(first=False)  %}
+    {% for name, data_index in index.items() %}{% if ns.first %},
+    {% else %}{% set ns.first = True %}{% endif%}INDEX {{name}} {{data_index['expr']}} TYPE {{data_index['type']}} GRANULARITY {{data_index['gran']}} {% endfor %}
+    {% endif %}
+) ENGINE = {{engine}}
+
+{% if order_by %}
+ORDER BY (
+    {% set ns = namespace(first=False)  %}
+    {% for name in order_by %}{% if ns.first %},
+    {% else %}{% set ns.first = True %}{% endif%}{{name}}{% endfor %}
+)
+{% elif tuple_order %}
+ORDER BY tuple()
+{% endif %}
+
+
+{% if partition_by %}
+PARTITION BY (
+    {% set ns = namespace(first=False)  %}
+    {% for name in partition_by %}{% if ns.first %},
+    {% else %}{% set ns.first = True %}{% endif%}{{name}}{% endfor %}
+)
+{% endif %}
+
+{% if primary_keys %}
+PRIMARY KEY (
+    {% set ns = namespace(first=False)  %}
+    {% for name in primary_keys %}{% if ns.first %},
+    {% else %}{% set ns.first = True %}{% endif%}{{name}}{% endfor %}
+)
+{% endif %}
+
+{% if sample_by %}
+SAMPLE BY  (
+    {% set ns = namespace(first=False)  %}
+    {% for name in sample_by %}{% if ns.first %},
+    {% else %}{% set ns.first = True %}{% endif%}{{name}}{% endfor %}
+)
+{% endif %}
+
+{% if ttl %}
+TTL
+    {{ttl}}
+{% endif %}
+
+{% if settings %}
+SETTINGS
+    {% set ns = namespace(first=False)  %}
+    {% for name, value in settings.items() %}{% if ns.first %},
+    {% else %}{% set ns.first = True %}{% endif%}{{name}}={{value}}{% endfor %}
+{% endif %}
