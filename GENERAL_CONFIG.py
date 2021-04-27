@@ -10,4 +10,4 @@ class GeneralConfig():
     """
     ITS_DOCKER = None
     KAFKA_URL = None
-
+    # YCL_DRIVER_IS_SYNC = True  # Синхронный драйвер - удалить/заменить на False - если нужен асинхронный

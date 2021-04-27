@@ -19,6 +19,7 @@ psycopg2 = "*"
 SQLAlchemy = "*"
 asyncpg = "*"
 asynch = "*"
+clickhouse-driver = "*"
 
 
 # EXEL XLSX Driver

@@ -4,9 +4,12 @@ https://github.com/long2ice/asynch
 """
 import asynch
 from asynch.cursors import DictCursor
+from clickhouse_driver import connect as SyncConnect
+
 from pathlib import Path
 from MODS.scripts.python.jinja import jinja_render_to_str, jinja_render_str_to_str
 from ..metadata import ycl_ycl_convertations
+from GENERAL_CONFIG import GeneralConfig
 
 DEFAULT_JINJA_PATTERN_META = Path(__file__).parent / 'get_meta.jinja'
 DEFAULT_JINJA_PATTERN_CREATE_TABLE = Path(__file__).parent / 'create_table.jinja'
@@ -20,7 +23,7 @@ DEFAULT_JINJA_PATTERN_CREATE_MVIEW = Path(__file__).parent / 'create_mview.jinja
 
 class YandexConnector:
     """
-    Драйвер коннектора
+    Асинхронный драйвер коннектора
     """
 
     def __init__(self, host, port, user, password, database):
@@ -46,6 +49,34 @@ class YandexConnector:
         await self.conn.close()
 
 
+class YandexSyncConnector:
+    """
+    Синхронный драйвер коннектора
+    """
+
+    def __init__(self, host, port, user, password, database):
+        self.host = host
+        self.port = port
+        self.user = user
+        self.password = password
+        self.database = database
+        self.conn = None
+
+    def __enter__(self):
+        self.conn = SyncConnect(
+            host=self.host,
+            port=self.port,
+            user=self.user,
+            password=self.password,
+            database=self.database
+        )
+
+        return self.conn
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.conn.close()
+
+
 async def do_execute(host, port, user, password, database, text_req):
     """
     Проброс execute
@@ -58,11 +89,26 @@ async def do_execute(host, port, user, password, database, text_req):
     :return:
     """
 
-    async with YandexConnector(host=host, port=port, user=user, password=password, database=database) as ycl:
-        async with ycl.cursor(cursor=DictCursor) as cursor:
-            await cursor.execute(text_req)
+    if getattr(GeneralConfig, 'YCL_DRIVER_IS_SYNC', False):
+        # Синхронный коннектор по требованию (был случай когда асинхронный тупо умирает из-за того что cl старый)
+
+        with YandexSyncConnector(host, port, user, password, database) as ycl:
+            cursor = ycl.cursor()
+            cursor.execute(text_req)
             records = cursor.fetchall()
+            if cursor.columns_with_types and records:
+                column_names = [item[0] for item in cursor.columns_with_types]
+                records = [dict(zip(column_names, item)) for item in records]
+
+            cursor.close()
             return records
+    else:
+        # Асинхронный коннектор по умолчанию
+        async with YandexConnector(host=host, port=port, user=user, password=password, database=database) as ycl:
+            async with ycl.cursor(cursor=DictCursor) as cursor:
+                await cursor.execute(text_req)
+                records = cursor.fetchall()
+                return records
 
 
 async def exec_req_from_str_jinja(conn, jinja_pattern, render_data, jinja_folder=None):
