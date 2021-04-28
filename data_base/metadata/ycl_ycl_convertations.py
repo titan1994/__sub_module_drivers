@@ -20,10 +20,10 @@ def main_ycl_ycl_json_converter(metadata_ycl):
             'name': column_data['column_name'],
             'type': column_data['column_type'],
             'comment': column_data['column_comment'],
-            'is_dict': False
         }
 
-        if column_data['table_engine'].lower() == 'dictionary':
+        dict_type = column_data.get('dict_type')
+        if dict_type:
             # Кто бы мог подумать но в словаре первичный ключ не храниться в системной таблице...
             create_table_query = column_data['create_table_query']
             posA = create_table_query.find('PRIMARY KEY')
@@ -34,8 +34,6 @@ def main_ycl_ycl_json_converter(metadata_ycl):
                 column['is_pk'] = True
             else:
                 column['is_pk'] = False
-
-            column['is_dict'] = True
         else:
             # C нормальными таблицами всё хорошо
 
@@ -48,12 +46,15 @@ def main_ycl_ycl_json_converter(metadata_ycl):
             if attributes is not None:
                 table = {
                     'name': table_name,
+                    'engine': engine,
+                    'is_dict': is_dict,
                     'attributes': attributes
                 }
-
                 tables.append(table)
 
             table_name = column_data['table_name']
+            engine = column_data.get('table_engine')
+            is_dict = True if dict_type else False
             attributes = []
 
         attributes.append(column)

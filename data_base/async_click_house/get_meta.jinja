@@ -1,17 +1,21 @@
-select table.database as db,
-       table.name as table_name,
-       table.engine as table_engine,
-       table.engine_full as table_engine_full,
-       table.primary_key as primary_key,
+select table.database           as db,
+       table.name               as table_name,
+       table.engine             as table_engine,
+       table.engine_full        as table_engine_full,
+       table.primary_key        as primary_key,
        table.create_table_query as create_table_query,
-       column.name as column_name,
-       column.comment as column_comment,
-       column.type as column_type
+       column.name              as column_name,
+       column.comment           as column_comment,
+       column.type              as column_type,
+       dictionaries.type        as dict_type
 
 from system.tables as table
     JOIN system.columns as column ON
         column.database = table.database
         AND column.table = table.name
+
+    LEFT JOIN system.dictionaries as dictionaries ON
+        dictionaries.name = table.name
 
 WHERE table.database='{{db_name}}'
 {% if table_filter %}

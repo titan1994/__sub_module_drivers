@@ -77,7 +77,7 @@ class YandexSyncConnector:
         self.conn.close()
 
 
-async def do_execute(host, port, user, password, database, text_req):
+async def do_execute(host, port, user, password, database, text_req, manual_sync=False):
     """
     Проброс execute
     :param host:
@@ -86,10 +86,11 @@ async def do_execute(host, port, user, password, database, text_req):
     :param password:
     :param database:
     :param text_req:
+    :param manual_sync: - Ручное переключение на синхронный драйвер
     :return:
     """
 
-    if getattr(GeneralConfig, 'YCL_DRIVER_IS_SYNC', False):
+    if getattr(GeneralConfig, 'YCL_DRIVER_IS_SYNC', False) or manual_sync:
         # Синхронный коннектор по требованию (был случай когда асинхронный тупо умирает из-за того что cl старый)
 
         with YandexSyncConnector(host, port, user, password, database) as ycl:
@@ -111,7 +112,7 @@ async def do_execute(host, port, user, password, database, text_req):
                 return records
 
 
-async def exec_req_from_str_jinja(conn, jinja_pattern, render_data, jinja_folder=None):
+async def exec_req_from_str_jinja(conn, jinja_pattern, render_data, jinja_folder=None, manual_sync=False):
     """
     Обобщение выполнение запроса по строковому шаблону jinja
     """
@@ -124,13 +125,14 @@ async def exec_req_from_str_jinja(conn, jinja_pattern, render_data, jinja_folder
 
     res = await do_execute(
         **conn,
-        text_req=sql_req
+        text_req=sql_req,
+        manual_sync=manual_sync
     )
 
     return res
 
 
-async def exec_req_from_file_jinja(conn, jinja_pattern, render_data, jinja_folder=None):
+async def exec_req_from_file_jinja(conn, jinja_pattern, render_data, jinja_folder=None, manual_sync=False):
     """
     Обобщение выполнение запроса по файловому шаблону jinja
     """
@@ -142,7 +144,8 @@ async def exec_req_from_file_jinja(conn, jinja_pattern, render_data, jinja_folde
     )
     res = await do_execute(
         **conn,
-        text_req=sql_pattern
+        text_req=sql_pattern,
+        manual_sync=manual_sync
     )
 
     return res

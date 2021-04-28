@@ -53,10 +53,10 @@ async def process_metadata(json_in):
                 # Постгрес в кликхаус
 
                 data_scheme = await psql.get_tables_from_database(
-                    ip=ip,
+                    host=ip,
                     port=port,
-                    login=login,
-                    pswd=pswd,
+                    user=login,
+                    password=pswd,
                     database=db_name,
                     table_filter=db_tables
                 )
@@ -66,10 +66,10 @@ async def process_metadata(json_in):
                 # Кликхаус в кликхаус
 
                 data_scheme = await ycl.get_tables_from_database(
-                    ip=ip,
+                    host=ip,
                     port=port,
-                    login=login,
-                    pswd=pswd,
+                    user=login,
+                    password=pswd,
                     database=db_name,
                     table_filter=db_tables
                 )

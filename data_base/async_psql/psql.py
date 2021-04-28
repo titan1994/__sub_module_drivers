@@ -4,11 +4,20 @@
 
 import asyncio
 import asyncpg
+from pathlib import Path
+from MODS.scripts.python.jinja import jinja_render_to_str, jinja_render_str_to_str
+from ..metadata import psql_cl_convertations
+
+DEFAULT_JINJA_PATTERN_META = Path(__file__).parent / 'get_meta.jinja'
+
+"""
+Обобщённый функционал
+"""
 
 
 class PostgresConnector:
     """
-    Драйвер коннектора
+    Асинхронный драйвер коннектора
     """
 
     def __init__(self, host, port, user, password, database):
@@ -34,9 +43,85 @@ class PostgresConnector:
         await self.conn.close()
 
 
+async def do_execute(host, port, user, password, database, text_req):
+    """
+    Выполнение запроса к базе
+    """
+    async with PostgresConnector(
+            host=host,
+            port=port,
+            user=user,
+            password=password,
+            database=database
+    ) as psql:
+        records = await psql.fetch(text_req)
+        return records
+
+
+async def exec_req_from_str_jinja(conn, jinja_pattern, render_data, jinja_folder=None):
+    """
+    Обобщение выполнение запроса по строковому шаблону jinja
+    """
+
+    sql_req = jinja_render_str_to_str(
+        str_pattern=jinja_pattern,
+        render=render_data,
+        pattern_folder=jinja_folder
+    )
+
+    res = await do_execute(
+        **conn,
+        text_req=sql_req
+    )
+
+    return res
+
+
+async def exec_req_from_file_jinja(conn, jinja_pattern, render_data, jinja_folder=None):
+    """
+    Обобщение выполнение запроса по файловому шаблону jinja
+    """
+    sql_pattern = jinja_render_to_str(
+        src=jinja_pattern,
+        render=render_data,
+        pattern_folder=jinja_folder,
+        smart_replace=True
+    )
+    res = await do_execute(
+        **conn,
+        text_req=sql_pattern
+    )
+
+    return res
+
+
+"""
+Метаданные
+"""
+
+
+async def get_metadata(conn, table_filter=None):
+    """
+    Получить метаданные таблиц
+    Надстройка над драйвером, чтобы голову не ломать. Сразу получаем самое вкусное
+
+    table_filter = ['имя таблицы']
+    """
+
+    data_scheme = await get_tables_from_database(
+        table_filter=table_filter,
+        **conn
+    )
+    if data_scheme:
+        return psql_cl_convertations.main_psql_ycl_json_converter(data_scheme)
+
+    return None
+
+
 async def get_tables_from_database(host, port, user, password, database, table_filter=None):
     """
     Получет схему метаданных для конкретной базы данных
+
     :param table_filter: список конкретных таблиц, если не указан - то все public таблицы
     :param host:
     :param port:
@@ -46,42 +131,20 @@ async def get_tables_from_database(host, port, user, password, database, table_f
     :return:
     """
 
-    sql_pattern = """
-    SELECT * FROM
-    information_schema.tables as tables
-    LEFT
-    JOIN
-    INFORMATION_SCHEMA.COLUMNS as columns
-    ON
-    tables.table_name = columns.table_name
-    WHERE
-    tables.table_schema = 'public'
-    <table_filter>
-    """
+    sql_pattern = jinja_render_to_str(
+        src=DEFAULT_JINJA_PATTERN_META,
+        render={
+            'table_filter': table_filter,
+        }
+    )
 
-    if table_filter:
-        sql_filter_table = ""
-        for table_name in table_filter:
-            sql_filter_table = sql_filter_table + table_name + ','
+    res = await do_execute(
+        host=host,
+        port=port,
+        user=user,
+        password=password,
+        database=database,
+        text_req=sql_pattern
+    )
 
-        sql_filter_table = sql_filter_table[:-1]
-
-        sql_pattern = sql_pattern.replace('<table_filter>', f'and tables.table_name IN ({sql_filter_table})')
-    else:
-        sql_pattern = sql_pattern.replace('<table_filter>', '')
-
-    async with PostgresConnector(host, port, user, password, database) as psql:
-
-        records = await psql.fetch(sql_pattern)
-        return records
-
-        # Можно перебирать запрос асинхронно и пачками - когда не важен порядок следования элементов
-        # async with psql.transaction():
-        #     async for rec in psql.cursor(sql_pattern):
-        #         print(rec['column_name'])
-
-
-if __name__ == '__main__':
-    ioloop = asyncio.get_event_loop()
-    ioloop.run_until_complete(get_tables_from_database("localhost", 5432, 'admin', 'admin', 'nifi_db'))
-    ioloop.close()
+    return res

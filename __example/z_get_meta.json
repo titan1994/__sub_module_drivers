@@ -1,0 +1,1632 @@
+[
+    {
+        "ip": "192.168.46.229",
+        "port": 9000,
+        "type": "ycl",
+        "name_schema": "clickhouse",
+        "data_bases": [
+            {
+                "name": "mercury",
+                "tables": [
+                    {
+                        "name": "business_entity",
+                        "engine": "ReplacingMergeTree",
+                        "is_dict": true,
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "federal_district_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "guidCountry",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "guidSubRegion",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "kpp",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "name",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "region_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "be_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "inn",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "guid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "sub_region_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "guidRegion",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "certificate",
+                        "engine": "ReplacingMergeTree",
+                        "is_dict": false,
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "UInt64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "milk_attr_protein_min",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_protein_max",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_protein_type",
+                                "type": "Int32",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "guidRecipientCountry",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_fat_min",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_fat_max",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_fat_type",
+                                "type": "Int32",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_density_min",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_density_max",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_density_type",
+                                "type": "Int32",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "repaid_doctor_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "repaid_cert_date",
+                                "type": "DateTime64(9)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "vetExpertise",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "transit_time_hour",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "guidOriginCountry",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "product_name_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "former_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_protected_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "protocol_version",
+                                "type": "FixedString(36)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignor_be_sub_region_id",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignee_be_sub_region_id",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignor_ent_sub_region_id",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignee_ent_sub_region_id",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "repaid_date_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignor_ent_region_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignee_be_region_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignee_ent_region_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "transfer_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "product_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_source_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "insert_date_time_ts",
+                                "type": "DateTime64(9)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "unit_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "base_unit_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_date",
+                                "type": "DateTime",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_insert_date",
+                                "type": "DateTime64(9)",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "weight",
+                                "type": "Decimal(26, 6)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "base_weight",
+                                "type": "Decimal(26, 6)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignor_be_region_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignor_ent_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignee_be_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignee_ent_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "sub_product_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "product_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "doctor_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "unit_guid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_vetform_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_status_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_nature_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_request_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_reqsource_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignor_be_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            }
+                        ]
+                    },
+                    {
+                        "name": "certificate_test",
+                        "engine": "ReplacingMergeTree",
+                        "is_dict": false,
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "milk_attr_protein_min",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_protein_max",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_protein_type",
+                                "type": "Int32",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "guidRecipientCountry",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_fat_min",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_fat_max",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_fat_type",
+                                "type": "Int32",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_density_min",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_density_max",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "milk_attr_density_type",
+                                "type": "Int32",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "repaid_doctor_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "repaid_cert_date",
+                                "type": "DateTime64(9)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "vetExpertise",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "transit_time_hour",
+                                "type": "Decimal(18, 4)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "guidOriginCountry",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "product_name_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "former_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_protected_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "protocol_version",
+                                "type": "FixedString(36)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignor_be_sub_region_id",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignee_be_sub_region_id",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignor_ent_sub_region_id",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignee_ent_sub_region_id",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "repaid_date_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignor_ent_region_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignee_be_region_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignee_ent_region_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "transfer_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "product_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_source_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "insert_date_time_ts",
+                                "type": "DateTime64(9)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "unit_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "base_unit_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_date",
+                                "type": "DateTime",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_insert_date",
+                                "type": "DateTime64(9)",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "weight",
+                                "type": "Decimal(26, 6)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "base_weight",
+                                "type": "Decimal(26, 6)",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignor_be_region_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignor_ent_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignee_be_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignee_ent_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "sub_product_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "product_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "doctor_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "unit_guid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_vetform_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_status_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_nature_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_request_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cert_reqsource_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "consignor_be_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            }
+                        ]
+                    },
+                    {
+                        "name": "country",
+                        "engine": "ReplacingMergeTree",
+                        "is_dict": true,
+                        "attributes": [
+                            {
+                                "name": "guid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "name",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "alpha2",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "alpha3",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "numCode",
+                                "type": "Int32",
+                                "comment": "",
+                                "is_pk": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "enterprise",
+                        "engine": "ReplacingMergeTree",
+                        "is_dict": false,
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "name",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "region_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "ent_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "guid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "country_guid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "cerberusNumber",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": false
+                            },
+                            {
+                                "name": "address",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": false
+                            }
+                        ]
+                    },
+                    {
+                        "name": "federal_district",
+                        "engine": "ReplacingMergeTree",
+                        "is_dict": true,
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "name",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "product",
+                        "engine": "ReplacingMergeTree",
+                        "is_dict": true,
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "name",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "product_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "guid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "product_type",
+                        "engine": "ReplacingMergeTree",
+                        "is_dict": true,
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "name",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "uuid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "region",
+                        "engine": "ReplacingMergeTree",
+                        "is_dict": true,
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "name",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "guid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "last",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "federalDistrict",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "guidCountry",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "sub_product",
+                        "engine": "ReplacingMergeTree",
+                        "is_dict": true,
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "name",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "product_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "guid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "last",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "milk_type_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "uuid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "code",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "unit",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "base_unit_guid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "name",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "base_unit_id",
+                                "type": "Int64",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "ratio",
+                                "type": "Int32",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "guid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "last",
+                                "type": "String",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "uuid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            },
+                            {
+                                "name": "base_unit_uuid",
+                                "type": "UUID",
+                                "comment": "",
+                                "is_pk": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "ip": "localhost",
+        "port": 5432,
+        "type": "psql",
+        "name_schema": "postgres",
+        "data_bases": [
+            {
+                "name": "__test_app_core",
+                "tables": [
+                    {
+                        "name": "____sub_module_storage_atlant_aerich",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "version",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "app",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "content",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__cl_smpb_aerich",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "version",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "app",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "content",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__cl_smpb_example_tortoise_orm",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__cl_smpb_nsi_general_nsi_new_dict",
+                        "attributes": [
+                            {
+                                "name": "INN777",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "OKTMO",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_user",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "username",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "password_hash",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_section_general",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "group",
+                                "type": "Int32"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_panel_general",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_section_add",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "group",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "schemaEditorText",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "schemaUrl",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "____sub_module_storage_atlant_nsi_general_nsi_new_dict",
+                        "attributes": [
+                            {
+                                "name": "INN777",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "OKTMO",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__cl_smpb_nsi_general_nsi_test_dict",
+                        "attributes": [
+                            {
+                                "name": "INN777",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "OKTMO",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_data_base",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "ip",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "port",
+                                "type": "Int32"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_data_schema",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "version",
+                                "type": "Int32"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_panel_add",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "type",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "subType",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_section_data_base_attribute",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "attribute",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "database",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "table",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_section_filter",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "attribute",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "dataType",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "database",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "table",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_alembic_versions",
+                        "attributes": [
+                            {
+                                "name": "version_num",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "____sub_module_storage_atlant_example_tortoise_orm",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_data_base_users",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "databaseId",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "password",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_data_schema_db",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "databaseID",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_panel_filter",
+                        "attributes": [
+                            {
+                                "name": "id_system",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_smart_table",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "Int32"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_data_schema_db_tables",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "engine_order",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "engine_type",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_smart_table_column",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "levelsAggregation",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "rounding",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "sort",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "valueType",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_data_schema_db_tables_attr",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "name",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "type",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_smart_table_column_db_source",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "attribute",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "database",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "table",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "type",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "function",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_smart_table_column_db_source_fp",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "parameter",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "__gda_smart_table_column_db_source_fp_dba",
+                        "attributes": [
+                            {
+                                "name": "id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "parent_id",
+                                "type": "Int32"
+                            },
+                            {
+                                "name": "attribute",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "database",
+                                "type": "VARCHAR"
+                            },
+                            {
+                                "name": "table",
+                                "type": "VARCHAR"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

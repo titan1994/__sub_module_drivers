@@ -1,0 +1,17 @@
+SELECT
+*
+FROM
+information_schema.tables as tables
+LEFT JOIN
+INFORMATION_SCHEMA.COLUMNS as columns
+ON
+tables.table_name = columns.table_name
+WHERE
+tables.table_schema = 'public'
+{% if table_filter %}
+and tables.table_name IN (
+    {% set ns = namespace(first=False)  %}
+    {% for name in table_filter %}{% if ns.first %},
+    {% else %}{% set ns.first = True %}{% endif%}'{{name}}'{% endfor %}
+)
+{% endif %}
