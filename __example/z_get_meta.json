@@ -3,826 +3,1040 @@
         "ip": "192.168.46.229",
         "port": 9000,
         "type": "ycl",
+        "_name": "Хранилище меркурия",
         "name_schema": "clickhouse",
         "data_bases": [
             {
                 "name": "mercury",
+                "_name": "Меркурий",
                 "tables": [
                     {
                         "name": "business_entity",
+                        "_name": "Хозяйствующий субъект",
                         "engine": "ReplacingMergeTree",
                         "is_dict": true,
                         "attributes": [
                             {
                                 "name": "id",
+                                "_name": "Первичный ключ",
                                 "type": "Int64",
                                 "comment": "",
                                 "is_pk": true
                             },
                             {
                                 "name": "federal_district_id",
+                                "_name": "Федеральный округ (для РФ)",
                                 "type": "Int64",
                                 "comment": "",
-                                "is_pk": true
+                                "dictionary": "region",
+                                "is_pk": false
                             },
                             {
                                 "name": "guidCountry",
+                                "_name": "Страна",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
+                                "dictionary": "country",
+                                "is_pk": false
                             },
                             {
                                 "name": "guidSubRegion",
+                                "_name": "Глобальный идентификатор района",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
+                                "dictionary": "SubRegion",
+                                "is_pk": false
                             },
                             {
                                 "name": "kpp",
+                                "_name": "kpp",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "name",
+                                "_name": "Наименование",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "region_id",
+                                "_name": "Регион",
                                 "type": "Int64",
                                 "comment": "",
-                                "is_pk": true
+                                "dictionary": "region",
+                                "is_pk": false
                             },
                             {
                                 "name": "be_type_id",
+                                "_name": "Тип ХС",
                                 "type": "Int64",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "inn",
+                                "_name": "ИНН",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "guid",
+                                "_name": "Глобальный идентификатор",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "sub_region_id",
+                                "_name": "Район",
                                 "type": "Int64",
                                 "comment": "",
-                                "is_pk": true
+                                "dictionary": "SubRegion",
+                                "is_pk": false
                             },
                             {
                                 "name": "guidRegion",
+                                "_name": "Глобальный идентификатор региона",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
+                                "dictionary": "region",
+                                "is_pk": false
                             }
                         ]
                     },
                     {
                         "name": "certificate",
+                        "_name": "Сертификаты",
                         "engine": "ReplacingMergeTree",
                         "is_dict": false,
                         "attributes": [
                             {
                                 "name": "id",
+                                "_name": "Первичный ключ. Id сертификата",
                                 "type": "UInt64",
                                 "comment": "",
                                 "is_pk": true
                             },
                             {
                                 "name": "milk_attr_protein_min",
+                                "_name": "Массовая доля белка минимальное значение",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_protein_max",
+                                "_name": "Массовая доля белка максимальное значение",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_protein_type",
+                                "_name": "Массовая доля белка тип интервала",
                                 "type": "Int32",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "guidRecipientCountry",
+                                "_name": "Страна назначения",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "country",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_fat_min",
+                                "_name": "Массовая доля жира минимальное значение",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_fat_max",
+                                "_name": "Массовая доля жира максимальное значение",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_fat_type",
+                                "_name": "Массовая доля жира тип интервала",
                                 "type": "Int32",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_density_min",
+                                "_name": "Плотность минимальное значение",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_density_max",
+                                "_name": "Плотность максимальное значение",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_density_type",
+                                "_name": "Плотность тип интервала",
                                 "type": "Int32",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "repaid_doctor_id",
+                                "_name": "Пользователь, погасивший ВСД",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "users",
                                 "is_pk": false
                             },
                             {
                                 "name": "repaid_cert_date",
+                                "_name": "Дата погашения ВСД",
                                 "type": "DateTime64(9)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "vetExpertise",
+                                "_name": "Вет экспертиза",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "vetExpertise",
                                 "is_pk": false
                             },
                             {
                                 "name": "transit_time_hour",
+                                "_name": "Время в часах с момента оформления до погашения",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "guidOriginCountry",
+                                "_name": "Страна происхождения",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "country",
                                 "is_pk": false
                             },
                             {
                                 "name": "product_name_id",
+                                "_name": "Номенклатура",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "product_name",
                                 "is_pk": false
                             },
                             {
                                 "name": "former_id",
+                                "_name": "Тип пользователя, оформившего ВСД",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "former",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_protected_id",
+                                "_name": "Защищенность сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_protected",
                                 "is_pk": false
                             },
                             {
                                 "name": "protocol_version",
+                                "_name": "Версия протокола ВетИС.API",
                                 "type": "FixedString(36)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignor_be_sub_region_id",
+                                "_name": "ХС.Отправитель.Район",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "SubRegion",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignee_be_sub_region_id",
+                                "_name": "ХС.Получатель.Район",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "SubRegion",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignor_ent_sub_region_id",
+                                "_name": "Площадка.Отправитель.Район",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "SubRegion",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignee_ent_sub_region_id",
+                                "_name": "Площадка.Получатель.Район",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "SubRegion",
                                 "is_pk": false
                             },
                             {
                                 "name": "repaid_date_id",
+                                "_name": "repaid_date_id",
                                 "type": "Int64",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignor_ent_region_id",
+                                "_name": "Площадка.Отправитель.Субъект РФ",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "region",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignee_be_region_id",
+                                "_name": "ХС.Получатель.Субъект РФ",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "region",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignee_ent_region_id",
+                                "_name": "Площадка.Получатель.Субъект РФ",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "region",
                                 "is_pk": false
                             },
                             {
                                 "name": "transfer_type_id",
+                                "_name": "Тип перемещения",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "transfer_type",
                                 "is_pk": false
                             },
                             {
                                 "name": "product_type_id",
+                                "_name": "Тип продукции",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "product_type",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_source_id",
+                                "_name": "Источник сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_source",
                                 "is_pk": false
                             },
                             {
                                 "name": "insert_date_time_ts",
+                                "_name": "Время вставки записи в базу",
                                 "type": "DateTime64(9)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "unit_id",
+                                "_name": "Единица изменения, указанная в ВСД",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "unit",
                                 "is_pk": false
                             },
                             {
                                 "name": "base_unit_id",
+                                "_name": "Базовая единица измерения",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "unit",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_date",
+                                "_name": "Дата оформления ВСД",
                                 "type": "DateTime",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_insert_date",
+                                "_name": "Дата добавления записи в базу Меркурия",
                                 "type": "DateTime64(9)",
                                 "comment": "",
                                 "is_pk": true
                             },
                             {
                                 "name": "weight",
+                                "_name": "Объем, в единицах указанных в ВСД",
                                 "type": "Decimal(26, 6)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "base_weight",
+                                "_name": "Объем, приведенный к базовой единице измерения",
                                 "type": "Decimal(26, 6)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignor_be_region_id",
+                                "_name": "ХС.Отправитель.Субъект РФ",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "region",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignor_ent_id",
+                                "_name": "Предприятие-отправитель",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "enterprise",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignee_be_id",
+                                "_name": "ХС-получатель",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "business_entity",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignee_ent_id",
+                                "_name": "Предприятие-получатель",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "enterprise",
                                 "is_pk": false
                             },
                             {
                                 "name": "sub_product_id",
+                                "_name": "Вид продукции",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "sub_product",
                                 "is_pk": false
                             },
                             {
                                 "name": "product_id",
+                                "_name": "Продукция",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "product",
                                 "is_pk": false
                             },
                             {
                                 "name": "doctor_id",
+                                "_name": "Пользователь, оформивший ВСД",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "users",
                                 "is_pk": false
                             },
                             {
                                 "name": "unit_guid",
+                                "_name": "guid единицы измерения",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "unit",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_type_id",
+                                "_name": "Вид сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_type",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_vetform_id",
+                                "_name": "Форма сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_vetform",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_status_id",
+                                "_name": "Статус сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_status",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_nature_type_id",
+                                "_name": "Вид сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_nature",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_request_type_id",
+                                "_name": "Сертификат/заявка",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_isrequest_type",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_reqsource_type_id",
+                                "_name": "Происхождение сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_isreqsource_type",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignor_be_id",
+                                "_name": "ХС-отправитель",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "business_entity",
                                 "is_pk": false
                             }
                         ]
                     },
                     {
                         "name": "certificate_test",
+                        "_name": "Сертификаты. ТЕСТИРОВАНИЕ",
                         "engine": "ReplacingMergeTree",
                         "is_dict": false,
                         "attributes": [
                             {
                                 "name": "id",
+                                "_name": "Первичный ключ. Id сертификата",
                                 "type": "Int64",
                                 "comment": "",
                                 "is_pk": true
                             },
                             {
                                 "name": "milk_attr_protein_min",
+                                "_name": "Массовая доля белка минимальное значение",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_protein_max",
+                                "_name": "Массовая доля белка максимальное значение",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_protein_type",
+                                "_name": "Массовая доля белка тип интервала",
                                 "type": "Int32",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "guidRecipientCountry",
+                                "_name": "Страна назначения",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "country",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_fat_min",
+                                "_name": "Массовая доля жира минимальное значение",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_fat_max",
+                                "_name": "Массовая доля жира максимальное значение",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_fat_type",
+                                "_name": "Массовая доля жира тип интервала",
                                 "type": "Int32",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_density_min",
+                                "_name": "Плотность минимальное значение",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_density_max",
+                                "_name": "Плотность максимальное значение",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "milk_attr_density_type",
+                                "_name": "Плотность тип интервала",
                                 "type": "Int32",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "repaid_doctor_id",
+                                "_name": "Пользователь, погасивший ВСД",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "users",
                                 "is_pk": false
                             },
                             {
                                 "name": "repaid_cert_date",
+                                "_name": "Дата погашения ВСД",
                                 "type": "DateTime64(9)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "vetExpertise",
+                                "_name": "Вет экспертиза",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "vetExpertise",
                                 "is_pk": false
                             },
                             {
                                 "name": "transit_time_hour",
+                                "_name": "Время в часах с момента оформления до погашения",
                                 "type": "Decimal(18, 4)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "guidOriginCountry",
+                                "_name": "Страна происхождения",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "country",
                                 "is_pk": false
                             },
                             {
                                 "name": "product_name_id",
+                                "_name": "Номенклатура",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "product_name",
                                 "is_pk": false
                             },
                             {
                                 "name": "former_id",
+                                "_name": "Тип пользователя, оформившего ВСД",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "former",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_protected_id",
+                                "_name": "Защищенность сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_protected",
                                 "is_pk": false
                             },
                             {
                                 "name": "protocol_version",
+                                "_name": "Версия протокола ВетИС.API",
                                 "type": "FixedString(36)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignor_be_sub_region_id",
+                                "_name": "ХС.Отправитель.Район",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "SubRegion",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignee_be_sub_region_id",
+                                "_name": "ХС.Получатель.Район",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "SubRegion",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignor_ent_sub_region_id",
+                                "_name": "Площадка.Отправитель.Район",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "SubRegion",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignee_ent_sub_region_id",
+                                "_name": "Площадка.Получатель.Район",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "SubRegion",
                                 "is_pk": false
                             },
                             {
                                 "name": "repaid_date_id",
+                                "_name": "repaid_date_id",
                                 "type": "Int64",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignor_ent_region_id",
+                                "_name": "Площадка.Отправитель.Субъект РФ",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "region",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignee_be_region_id",
+                                "_name": "ХС.Получатель.Субъект РФ",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "region",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignee_ent_region_id",
+                                "_name": "Площадка.Получатель.Субъект РФ",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "region",
                                 "is_pk": false
                             },
                             {
                                 "name": "transfer_type_id",
+                                "_name": "Тип перемещения",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "transfer_type",
                                 "is_pk": false
                             },
                             {
                                 "name": "product_type_id",
+                                "_name": "Тип продукции",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "product_type",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_source_id",
+                                "_name": "Источник сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_source",
                                 "is_pk": false
                             },
                             {
                                 "name": "insert_date_time_ts",
+                                "_name": "Время вставки записи в базу",
                                 "type": "DateTime64(9)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "unit_id",
+                                "_name": "Единица изменения, указанная в ВСД",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "unit",
                                 "is_pk": false
                             },
                             {
                                 "name": "base_unit_id",
+                                "_name": "Базовая единица измерения",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "unit",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_date",
+                                "_name": "Дата оформления ВСД",
                                 "type": "DateTime",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_insert_date",
+                                "_name": "Дата добавления записи в базу Меркурия",
                                 "type": "DateTime64(9)",
                                 "comment": "",
                                 "is_pk": true
                             },
                             {
                                 "name": "weight",
+                                "_name": "Объем, в единицах указанных в ВСД",
                                 "type": "Decimal(26, 6)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "base_weight",
+                                "_name": "Объем, приведенный к базовой единице измерения",
                                 "type": "Decimal(26, 6)",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignor_be_region_id",
+                                "_name": "ХС.Отправитель.Субъект РФ",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "region",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignor_ent_id",
+                                "_name": "Предприятие-отправитель",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "enterprise",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignee_be_id",
+                                "_name": "ХС-получатель",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "business_entity",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignee_ent_id",
+                                "_name": "Предприятие-получатель",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "enterprise",
                                 "is_pk": false
                             },
                             {
                                 "name": "sub_product_id",
+                                "_name": "Вид продукции",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "sub_product",
                                 "is_pk": false
                             },
                             {
                                 "name": "product_id",
+                                "_name": "Продукция",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "product",
                                 "is_pk": false
                             },
                             {
                                 "name": "doctor_id",
+                                "_name": "Пользователь, оформивший ВСД",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "users",
                                 "is_pk": false
                             },
                             {
                                 "name": "unit_guid",
+                                "_name": "guid единицы измерения",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "unit",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_type_id",
+                                "_name": "Вид сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_type",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_vetform_id",
+                                "_name": "Форма сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_vetform",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_status_id",
+                                "_name": "Статус сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_status",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_nature_type_id",
+                                "_name": "Вид сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_nature",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_request_type_id",
+                                "_name": "Сертификат/заявка",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_isrequest_type",
                                 "is_pk": false
                             },
                             {
                                 "name": "cert_reqsource_type_id",
+                                "_name": "Происхождение сертификата",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "certificate_isreqsource_type",
                                 "is_pk": false
                             },
                             {
                                 "name": "consignor_be_id",
+                                "_name": "ХС-отправитель",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "business_entity",
                                 "is_pk": false
                             }
                         ]
                     },
                     {
                         "name": "country",
+                        "_name": "Страны",
                         "engine": "ReplacingMergeTree",
                         "is_dict": true,
                         "attributes": [
                             {
                                 "name": "guid",
+                                "_name": "Первичный ключ",
                                 "type": "UUID",
                                 "comment": "",
                                 "is_pk": true
                             },
                             {
                                 "name": "name",
+                                "_name": "Наименование",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "alpha2",
+                                "_name": "Код по ISO 3166-1 alpha-2",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "alpha3",
+                                "_name": "Код по ISO 3166-1 alpha-3",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "numCode",
+                                "_name": "Цифровой код",
                                 "type": "Int32",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             }
                         ]
                     },
                     {
                         "name": "enterprise",
+                        "_name": "Площадка",
                         "engine": "ReplacingMergeTree",
                         "is_dict": false,
                         "attributes": [
                             {
                                 "name": "id",
+                                "_name": "Первичный ключ",
                                 "type": "Int64",
                                 "comment": "",
                                 "is_pk": true
                             },
                             {
                                 "name": "name",
+                                "_name": "Наименование",
                                 "type": "String",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "region_id",
+                                "_name": "Регион",
                                 "type": "Int64",
                                 "comment": "",
+                                "dictionary": "region",
                                 "is_pk": false
                             },
                             {
                                 "name": "ent_type_id",
+                                "_name": "Тип площадки",
                                 "type": "Int64",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "guid",
+                                "_name": "Глобальный идентификатор",
                                 "type": "UUID",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "country_guid",
+                                "_name": "Страна",
                                 "type": "UUID",
                                 "comment": "",
+                                "dictionary": "country",
                                 "is_pk": false
                             },
                             {
                                 "name": "cerberusNumber",
+                                "_name": "Номер площадки в системе Цербер",
                                 "type": "String",
                                 "comment": "",
                                 "is_pk": false
                             },
                             {
                                 "name": "address",
+                                "_name": "Адрес площадки",
                                 "type": "String",
                                 "comment": "",
                                 "is_pk": false
@@ -831,797 +1045,277 @@
                     },
                     {
                         "name": "federal_district",
+                        "_name": "Федеральный округ",
                         "engine": "ReplacingMergeTree",
                         "is_dict": true,
                         "attributes": [
                             {
                                 "name": "id",
+                                "_name": "Первичный ключ",
                                 "type": "Int64",
                                 "comment": "",
                                 "is_pk": true
                             },
                             {
                                 "name": "name",
+                                "_name": "Наименование",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             }
                         ]
                     },
                     {
                         "name": "product",
+                        "_name": "Продукция",
                         "engine": "ReplacingMergeTree",
                         "is_dict": true,
                         "attributes": [
                             {
                                 "name": "id",
+                                "_name": "Первичный ключ",
                                 "type": "Int64",
                                 "comment": "",
                                 "is_pk": true
                             },
                             {
                                 "name": "name",
+                                "_name": "Наименование",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "product_type_id",
+                                "_name": "Тип продукции",
                                 "type": "Int64",
                                 "comment": "",
-                                "is_pk": true
+                                "dictionary": "product_type",
+                                "is_pk": false
                             },
                             {
                                 "name": "guid",
+                                "_name": "Guid продукции  (глобальный идентификатор)",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             }
                         ]
                     },
                     {
                         "name": "product_type",
+                        "_name": "Тип продукции",
                         "engine": "ReplacingMergeTree",
                         "is_dict": true,
                         "attributes": [
                             {
                                 "name": "id",
+                                "_name": "Первичный ключ",
                                 "type": "Int64",
                                 "comment": "",
                                 "is_pk": true
                             },
                             {
                                 "name": "name",
+                                "_name": "Наименование",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "uuid",
+                                "_name": "uuid продукции",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             }
                         ]
                     },
                     {
                         "name": "region",
+                        "_name": "Субъекты",
                         "engine": "ReplacingMergeTree",
                         "is_dict": true,
                         "attributes": [
                             {
                                 "name": "id",
+                                "_name": "Первичный ключ",
                                 "type": "Int64",
                                 "comment": "",
                                 "is_pk": true
                             },
                             {
                                 "name": "name",
+                                "_name": "Наименование",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "guid",
+                                "_name": "guid региона (глобальный идентификатор)",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "last",
+                                "_name": "last",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "federalDistrict",
+                                "_name": "Федеральный округ",
                                 "type": "Int64",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "guidCountry",
+                                "_name": "Код страны",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
+                                "dictionary": "country",
+                                "is_pk": false
                             }
                         ]
                     },
                     {
                         "name": "sub_product",
+                        "_name": "Вид продукции",
                         "engine": "ReplacingMergeTree",
                         "is_dict": true,
                         "attributes": [
                             {
                                 "name": "id",
+                                "_name": "Первичный ключ",
                                 "type": "Int64",
                                 "comment": "",
                                 "is_pk": true
                             },
                             {
                                 "name": "name",
+                                "_name": "Наименование",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "product_id",
+                                "_name": "Продукция",
                                 "type": "Int64",
                                 "comment": "",
-                                "is_pk": true
+                                "dictionary": "product",
+                                "is_pk": false
                             },
                             {
                                 "name": "guid",
+                                "_name": "guid региона  (глобальный идентификатор)",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "last",
+                                "_name": "last",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "milk_type_id",
+                                "_name": "Тип молочной продукции",
                                 "type": "Int64",
                                 "comment": "",
-                                "is_pk": true
+                                "dictionary": "milk_type",
+                                "is_pk": false
                             },
                             {
                                 "name": "uuid",
+                                "_name": "uuid записи",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "code",
+                                "_name": "Код ТН ВЭД",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             }
                         ]
                     },
                     {
                         "name": "unit",
+                        "_name": "Единица измерения",
+                        "engine": "ReplacingMergeTree",
+                        "is_dict": true,
                         "attributes": [
                             {
                                 "name": "id",
+                                "_name": "Первичный ключ",
                                 "type": "Int64",
                                 "comment": "",
                                 "is_pk": true
                             },
                             {
                                 "name": "base_unit_guid",
+                                "_name": "Глобальный идентификатор базовой единицы для данной записи",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "name",
+                                "_name": "Наименование",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "base_unit_id",
+                                "_name": "Id записи базовой единицы",
                                 "type": "Int64",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "ratio",
+                                "_name": "Коэффициент пересчета в базовую единицу",
                                 "type": "Int32",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "guid",
+                                "_name": "Глобальный идентификатор",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "last",
+                                "_name": "Последняя запись",
                                 "type": "String",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "uuid",
+                                "_name": "uuid записи",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
+                                "is_pk": false
                             },
                             {
                                 "name": "base_unit_uuid",
+                                "_name": "uuid  записи базовой единицы для данной записи",
                                 "type": "UUID",
                                 "comment": "",
-                                "is_pk": true
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "ip": "localhost",
-        "port": 5432,
-        "type": "psql",
-        "name_schema": "postgres",
-        "data_bases": [
-            {
-                "name": "__test_app_core",
-                "tables": [
-                    {
-                        "name": "____sub_module_storage_atlant_aerich",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "version",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "app",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "content",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__cl_smpb_aerich",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "version",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "app",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "content",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__cl_smpb_example_tortoise_orm",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__cl_smpb_nsi_general_nsi_new_dict",
-                        "attributes": [
-                            {
-                                "name": "INN777",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "OKTMO",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_user",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "username",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "password_hash",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_section_general",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "group",
-                                "type": "Int32"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_panel_general",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_section_add",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "group",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "schemaEditorText",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "schemaUrl",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "____sub_module_storage_atlant_nsi_general_nsi_new_dict",
-                        "attributes": [
-                            {
-                                "name": "INN777",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "OKTMO",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__cl_smpb_nsi_general_nsi_test_dict",
-                        "attributes": [
-                            {
-                                "name": "INN777",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "OKTMO",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_data_base",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "ip",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "port",
-                                "type": "Int32"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_data_schema",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "version",
-                                "type": "Int32"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_panel_add",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "type",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "subType",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_section_data_base_attribute",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "attribute",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "database",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "table",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_section_filter",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "attribute",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "dataType",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "database",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "table",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_alembic_versions",
-                        "attributes": [
-                            {
-                                "name": "version_num",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "____sub_module_storage_atlant_example_tortoise_orm",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_data_base_users",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "databaseId",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "password",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_data_schema_db",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "databaseID",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_panel_filter",
-                        "attributes": [
-                            {
-                                "name": "id_system",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_smart_table",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "Int32"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_data_schema_db_tables",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "engine_order",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "engine_type",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_smart_table_column",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "levelsAggregation",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "rounding",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "sort",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "valueType",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_data_schema_db_tables_attr",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "name",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "type",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_smart_table_column_db_source",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "attribute",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "database",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "table",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "type",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "function",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_smart_table_column_db_source_fp",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "parameter",
-                                "type": "VARCHAR"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "__gda_smart_table_column_db_source_fp_dba",
-                        "attributes": [
-                            {
-                                "name": "id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "parent_id",
-                                "type": "Int32"
-                            },
-                            {
-                                "name": "attribute",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "database",
-                                "type": "VARCHAR"
-                            },
-                            {
-                                "name": "table",
-                                "type": "VARCHAR"
+                                "is_pk": false
                             }
                         ]
                     }

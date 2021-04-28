@@ -152,7 +152,7 @@ def get_data_type_column(column_data):
     return data_type_scan
 
 
-def main_psql_ycl_json_converter(metadata_psql):
+def main_psql_ycl_json_converter(metadata_psql, transform_add=None):
     """
     Конвертация метаданных постгреса в кликхаус, предполагаемый селект:
 
@@ -174,6 +174,12 @@ def main_psql_ycl_json_converter(metadata_psql):
     table_name = ''
     attributes = None
 
+    if not isinstance(transform_add, dict):
+        transform_add = {}
+
+    conv_name = transform_add.get('conv_name', {})
+    # conv_dict = transform_add.get('conv_dict', {})
+
     for column_data in metadata_psql:
 
         data_type_scan = get_data_type_column(column_data)
@@ -181,21 +187,27 @@ def main_psql_ycl_json_converter(metadata_psql):
         if data_type_scan is None:
             data_type_scan = 'TYPE_TRANSFORM_ERROR'
 
+        current_table_name = column_data['table_name']
+        current_column_name = column_data['column_name']
+
         column = {
-            "name": column_data['column_name'],
+            "name": current_column_name,
+            '_name': conv_name.get(current_table_name, {}).get(current_column_name, current_column_name),
             "type": data_type_scan
         }
 
-        if not table_name == column_data['table_name']:
+        if not table_name == current_table_name:
             if attributes is not None:
                 table = {
                     'name': table_name,
-                    'attributes': attributes
+                    '_name': table_human_name,
+                    'attributes': attributes,
                 }
 
                 tables.append(table)
 
-            table_name = column_data['table_name']
+            table_name = current_table_name
+            table_human_name = conv_name.get(current_table_name, {}).get('_', current_table_name)
             attributes = []
 
         attributes.append(column)
@@ -203,7 +215,8 @@ def main_psql_ycl_json_converter(metadata_psql):
     # Последняя таблица
     table = {
         'name': table_name,
-        'attributes': attributes
+        '_name': table_human_name,
+        'attributes': attributes,
     }
 
     tables.append(table)

@@ -19,20 +19,20 @@ async def get_meta():
             ],
             "name": "clickhouse"
         },
-        {
-            "ip": "localhost",
-            "port": 5432,
-            "type_db": "psql",
-            "data_bases": [
-                {
-                    "user": "__test_app_core",
-                    "pswd": "__test_app_core",
-                    "name": "__test_app_core",
-                    "tables": ""
-                }
-            ],
-            "name": "postgres"
-        }
+        # {
+        #     "ip": "localhost",
+        #     "port": 5432,
+        #     "type_db": "psql",
+        #     "data_bases": [
+        #         {
+        #             "user": "__test_app_core",
+        #             "pswd": "__test_app_core",
+        #             "name": "__test_app_core",
+        #             "tables": ""
+        #         }
+        #     ],
+        #     "name": "postgres"
+        # }
     ]
 
     report = await process_metadata(json_in=in_data)

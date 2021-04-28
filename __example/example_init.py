@@ -8,6 +8,7 @@ from MODS.scripts.python.easy_scripts import PROJECT_GENERAL_FOLDER
 load_dotenv(PROJECT_GENERAL_FOLDER / '.env')
 load_dotenv(PROJECT_GENERAL_FOLDER / '.env.production')
 
+GeneralConfig.ITS_DOCKER = getenv('ITS_DOCKER')
 
 if GeneralConfig.ITS_DOCKER:
     GeneralConfig.KAFKA_URL = getenv('KAFKA_URL_DOCKER')

@@ -1,0 +1,120 @@
+{
+  "192.168.46.229:9000": {
+    "mercury": {
+      "certificate": {
+        "cert_type_id": "certificate_type",
+        "cert_vetform_id": "certificate_vetform",
+        "cert_status_id": "certificate_status",
+        "cert_nature_type_id": "certificate_nature",
+        "cert_request_type_id": "certificate_isrequest_type",
+        "cert_reqsource_type_id": "certificate_isreqsource_type",
+        "consignor_be_id": "business_entity",
+        "consignor_ent_id": "enterprise",
+        "consignee_be_id": "business_entity",
+        "consignee_ent_id": "enterprise",
+        "sub_product_id": "sub_product",
+        "product_id": "product",
+        "doctor_id": "users",
+        "unit_guid": "unit",
+        "unit_id": "unit",
+        "base_unit_id": "unit",
+        "consignor_be_region_id": "region",
+        "consignor_ent_region_id": "region",
+        "consignee_be_region_id": "region",
+        "consignee_ent_region_id": "region",
+        "transfer_type_id": "transfer_type",
+        "product_type_id": "product_type",
+        "cert_source_id": "certificate_source",
+        "cert_protected_id": "certificate_protected",
+        "consignor_be_sub_region_id": "SubRegion",
+        "consignee_be_sub_region_id": "SubRegion",
+        "consignor_ent_sub_region_id": "SubRegion",
+        "consignee_ent_sub_region_id": "SubRegion",
+        "repaid_doctor_id": "users",
+        "vetExpertise": "vetExpertise",
+        "guidOriginCountry": "country",
+        "product_name_id": "product_name",
+        "former_id": "former",
+        "guidRecipientCountry": "country"
+      },
+      "certificate_test": {
+        "cert_type_id": "certificate_type",
+        "cert_vetform_id": "certificate_vetform",
+        "cert_status_id": "certificate_status",
+        "cert_nature_type_id": "certificate_nature",
+        "cert_request_type_id": "certificate_isrequest_type",
+        "cert_reqsource_type_id": "certificate_isreqsource_type",
+        "consignor_be_id": "business_entity",
+        "consignor_ent_id": "enterprise",
+        "consignee_be_id": "business_entity",
+        "consignee_ent_id": "enterprise",
+        "sub_product_id": "sub_product",
+        "product_id": "product",
+        "doctor_id": "users",
+        "unit_guid": "unit",
+        "unit_id": "unit",
+        "base_unit_id": "unit",
+        "consignor_be_region_id": "region",
+        "consignor_ent_region_id": "region",
+        "consignee_be_region_id": "region",
+        "consignee_ent_region_id": "region",
+        "transfer_type_id": "transfer_type",
+        "product_type_id": "product_type",
+        "cert_source_id": "certificate_source",
+        "cert_protected_id": "certificate_protected",
+        "consignor_be_sub_region_id": "SubRegion",
+        "consignee_be_sub_region_id": "SubRegion",
+        "consignor_ent_sub_region_id": "SubRegion",
+        "consignee_ent_sub_region_id": "SubRegion",
+        "repaid_doctor_id": "users",
+        "vetExpertise": "vetExpertise",
+        "guidOriginCountry": "country",
+        "product_name_id": "product_name",
+        "former_id": "former",
+        "guidRecipientCountry": "country"
+      },
+      "inventory": {
+        "be_Id": "business_entity",
+        "ent_id": "enterprise",
+        "unit_id": "unit",
+        "sub_product_id": "sub_product"
+      },
+      "product": {
+        "product_type_id": "product_type"
+      },
+      "product_name": {
+        "subProduct_id": "sub_product",
+        "guidSubProduct": "sub_product"
+      },
+      "region": {
+        "guidCountry": "country"
+      },
+      "sub_product": {
+        "product_id": "product",
+        "milk_type_id": "milk_type"
+      },
+      "SubRegion": {
+        "guidCountry": "country",
+        "parent_id": "region"
+      },
+      "business_entity": {
+        "region_id": "region",
+        "sub_region_id": "SubRegion",
+        "guidRegion": "region",
+        "federal_district_id": "region",
+        "guidCountry": "country",
+        "guidSubRegion": "SubRegion"
+      },
+      "enterprise": {
+        "region_id": "region",
+        "sub_region_id": "SubRegion",
+        "country_guid": "country",
+        "region_guid": "region",
+        "subRegion_guid": "SubRegion"
+      }
+    }
+  }
+}
+
+
+

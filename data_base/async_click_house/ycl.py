@@ -156,7 +156,7 @@ async def exec_req_from_file_jinja(conn, jinja_pattern, render_data, jinja_folde
 """
 
 
-async def get_metadata(conn, table_filter=None):
+async def get_metadata(conn, table_filter=None, transform_add=None):
     """
     Получить метаданные таблиц
     Надстройка над драйвером, чтобы голову не ломать. Сразу получаем самое вкусное
@@ -169,7 +169,10 @@ async def get_metadata(conn, table_filter=None):
         **conn
     )
     if data_scheme:
-        return ycl_ycl_convertations.main_ycl_ycl_json_converter(data_scheme)
+        return ycl_ycl_convertations.main_ycl_ycl_json_converter(
+            metadata_ycl=data_scheme,
+            transform_add=transform_add
+        )
 
     return None
 
