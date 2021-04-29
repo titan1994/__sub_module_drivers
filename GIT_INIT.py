@@ -94,7 +94,7 @@ else:
             print(exp)
 
     # Удаляем директорию модулей
-    try:
-        rmtree(Path(GEN_MOD_FOLDER))
-    except Exception as exp:
-        print(exp)
+    # try:
+    #     rmtree(Path(GEN_MOD_FOLDER))
+    # except Exception as exp:
+    #     print(exp)
