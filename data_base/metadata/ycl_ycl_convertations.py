@@ -39,7 +39,7 @@ def main_ycl_ycl_json_converter(metadata_ycl, transform_add=None):
             column['dictionary'] = dict_rel
 
         # Определение первичного ключа
-        if dict_type:
+        if dict_type or column_data.get('table_engine', '').lower() == 'dictionary':
             # Кто бы мог подумать но в словаре первичный ключ не храниться в системной таблице...
             create_table_query = column_data['create_table_query']
             posA = create_table_query.find('PRIMARY KEY')
