@@ -49,3 +49,4 @@ __docker/volumes/kafka/zoo/log/*
 !__docker/volumes/kafka/zoo/log/.gitkeep
 
 
+/MODS/
