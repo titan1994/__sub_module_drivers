@@ -12,7 +12,11 @@ async def send_get(url, params=None):
     """
 
     async with httpx.AsyncClient() as client:
-        response = await client.get(url, params=params)
+        try:
+            response = await client.get(url, params=params)
+        except httpx.RequestError as exc:
+            print(f"An error occurred while requesting {exc.request.url!r}.")
+            return None
         return response
 
 
@@ -22,7 +26,11 @@ async def send_delete(url, params=None):
     """
 
     async with httpx.AsyncClient() as client:
-        response = await client.delete(url, params=params)
+        try:
+            response = await client.delete(url, params=params)
+        except httpx.RequestError as exc:
+            print(f"An error occurred while requesting {exc.request.url!r}.")
+            return None
         return response
 
 
@@ -35,5 +43,9 @@ async def send_post(url, data_body):
     """
 
     async with httpx.AsyncClient() as client:
-        response = await client.post(url, json=data_body)
+        try:
+            response = await client.post(url, json=data_body)
+        except httpx.RequestError as exc:
+            print(f"An error occurred while requesting {exc.request.url!r}.")
+            return None
         return response
