@@ -359,6 +359,68 @@ async def create_from_sql_dict(conn, sql_req):
     return res
 
 
+async def system_reload_all_dictionaries(conn):
+    """
+    Перезагрузка всех словарей
+    SYSTEM RELOAD DICTIONARIES
+    """
+
+    res = await do_execute(
+        **conn,
+        text_req='SYSTEM RELOAD DICTIONARIES'
+    )
+
+    return res
+
+
+async def system_reload_all_embedded_dictionaries(conn):
+    """
+    Перезагрузка всех встроенных словарей
+    SYSTEM RELOAD EMBEDDED DICTIONARIES
+    """
+
+    res = await do_execute(
+        **conn,
+        text_req='SYSTEM RELOAD EMBEDDED DICTIONARIES'
+    )
+
+    return res
+
+
+async def system_reload_dictionaries(conn, names):
+    """
+    Перезагрузка словарей по именам
+    SYSTEM RELOAD DICTIONARY Dictionary_name
+    """
+
+    jinja_str = 'SYSTEM RELOAD DICTIONARY {{dict_name}}'
+
+    if isinstance(names, str):
+        reload_list = [names]
+
+    elif isinstance(names, list):
+        reload_list = names
+    else:
+        reload_list = list[names]
+
+    report = {}
+    for name in reload_list:
+
+        render_data = {
+            'dict_name': name,
+        }
+
+        res = await exec_req_from_str_jinja(
+            conn=conn,
+            jinja_pattern=jinja_str,
+            render_data=render_data
+        )
+
+        report[name] = res
+
+    return report
+
+
 """
 CREATE MATERIALIZED VIEW - Материализованные представления  
 """
