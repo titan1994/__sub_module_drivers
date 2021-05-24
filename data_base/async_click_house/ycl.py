@@ -957,13 +957,20 @@ def skd_group_two_processing_settings_to_jinja(skd_settings):
         fields = dimensions[:ind + 1]
         if ind < (ln_dim - 1):
             for index_dim in range(ind, ln_dim - 1):
-                fields.append(f'NULL as {dimensions[index_dim+1]}')
+
+                if order_count == 0:
+                    fields.append(f'NULL as {dimensions[index_dim+1]}')
+                else:
+                    fields.append('NULL')
 
         fields.append(order_str)
 
         for measure in mesures:
             if measure.get('func', None):
-                field_str = f"{measure['func']}({measure['name']})"
+                if order_count == 0:
+                    field_str = f"{measure['func']}({measure['name']}) as {measure['name']}"
+                else:
+                    field_str = f"{measure['func']}({measure['name']})"
             else:
                 field_str = f"{measure['name']}"
 
