@@ -1,0 +1,37 @@
+SELECT * FROM (
+{% set nst = namespace(first=False)  %}
+{% for table in tables %}
+
+    {% if nst.first %}UNION ALL{% else %}{% set nst.first = True %}{% endif%}
+
+    SELECT
+        {% set ns = namespace(first=False)  %}
+        {% for field in table['fields'] %}{% if ns.first %},
+        {% else %}{% set ns.first = True %}{% endif%}{{field}}{% endfor %}
+
+    FROM {% if db_name %}{{db_name}}.{% endif %}{{table_name}}
+
+    {% if filters %}
+    WHERE
+    {% set ns = namespace(first=False)  %}
+    {% for filter in filters %}
+    {% if ns.first %}{% if filter.get('condition', None) %}{{filter['condition']}}{% else %}AND{% endif %}
+    {% if filter.get('union_start', None) %}({% endif %}
+    {% else %}{% set ns.first = True %}{% endif%}{{filter['name']}} {% if filter.get('compare_func', None) %}{{filter['compare_func']}}{% else %}=={% endif %} {{filter['value']}}
+    {% if filter.get('union_and', None) %}){% endif %}
+    {% endfor %}
+    {% endif %}
+
+    GROUP BY (
+        {% set ns = namespace(first=False)  %}
+        {% for field in table['group_fields'] %}{% if ns.first %},
+        {% else %}{% set ns.first = True %}{% endif%}{{field}}{% endfor %}
+    )
+{% endfor %}
+)
+
+ORDER BY (
+    {% set ns = namespace(first=False)  %}
+    {% for field in order_by %}{% if ns.first %},
+    {% else %}{% set ns.first = True %}{% endif%}{{field}}{% endfor %}
+)

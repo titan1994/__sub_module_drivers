@@ -16,6 +16,10 @@ DEFAULT_JINJA_PATTERN_CREATE_TABLE = Path(__file__).parent / 'create_table.jinja
 DEFAULT_JINJA_PATTERN_CREATE_DICT = Path(__file__).parent / 'create_dict.jinja'
 DEFAULT_JINJA_PATTERN_CREATE_MVIEW = Path(__file__).parent / 'create_mview.jinja'
 
+# Паттерны универсальных селектов
+
+DEFAULT_JINJA_PATTERN_SELECT_SKD_TWO_GROUPS = Path(__file__).parent / 'select_skd_two_groups.jinja'
+
 """
 Обобщённый функционал
 """
@@ -405,7 +409,6 @@ async def system_reload_dictionaries(conn, names):
 
     report = {}
     for name in reload_list:
-
         render_data = {
             'dict_name': name,
         }
@@ -817,6 +820,227 @@ def modify_settings_preparation_value(value):
         if not value.endswith("'"):
             value = value + "'"
     return value
+
+
+"""
+Хитрые/универсальные селекты, заслуживающие быть вписанными в драйвер
+"""
+
+
+class SKDSettingsError(Exception):
+    pass
+
+
+async def select_skd_two_groups(conn, data_select):
+    """
+    Уникальный селект. Создаёт выборку двойной вложенности без роллапа.
+    Ну как бы делаем часть роллапа без него, но с увеличенным количеством измерений
+    По сути - одна группировка, вложенная в другую - аналог СКД, но только на 2 уровня.
+    Есть потенциал расшириться на несколько уровней
+
+    Шаблон select_skd_two_groups.jinja
+
+    Пример:
+    skd_settings = {
+        'table_name': '__cl_smpb_showcase_data_farmerpassport_meansofpassport',
+        # 'db_name': 'defalut',
+        'dimensions': [
+            'organization',
+            'subject',
+            'period',
+            'type',
+            'economic_indicator',
+            'source_system',
+            'source_form',
+        ],
+        'two_levels': ['economic_indicator', 'source_form'],
+        'mesures': [
+            {
+                'name': 'value',
+                'func': 'SUM'
+            }
+        ],
+
+        'filters': [
+            {
+                'name': 'type',
+                'value': 'Факт',
+            },
+            {
+                'union_start': True,
+                'name': 'organization',
+                'value': '6829004230',
+            },
+            {
+                'condition': 'OR',
+                'name': 'subject',
+                'compare_func': 'IN',
+                'value': ['65', '67'],
+                'union_and': True,
+            },
+        ]
+
+    }
+    """
+
+    jinja_settings = skd_group_two_processing_settings_to_jinja(data_select)
+
+    res = await exec_req_from_file_jinja(
+        conn=conn,
+        jinja_pattern=DEFAULT_JINJA_PATTERN_SELECT_SKD_TWO_GROUPS,
+        render_data=jinja_settings
+    )
+
+    return res
+
+
+def skd_group_two_processing_settings_to_jinja(skd_settings):
+    """
+    Обработка настроек двойной группировки
+    """
+
+    DEFAULT_COLUMN_NAME_ORDER = '__SYSTEM_ORDER_MAPPING__'
+
+    # Проверка ключевых параметров
+
+    table_name = skd_settings.get('table_name', None)
+    if not table_name:
+        raise SKDSettingsError('name table not found!')
+
+    dimensions = skd_settings.get('dimensions', None)
+    if not dimensions:
+        raise SKDSettingsError('dimensions not found!')
+
+    mesures = skd_settings.get('mesures', None)
+    if not mesures:
+        raise SKDSettingsError('measures not found!')
+
+    level_list = skd_settings.get('two_levels', None)
+    if not level_list:
+        raise SKDSettingsError('two levels not found!')
+
+    # Оценка уровней результата
+    ln_dim = len(dimensions)
+
+    level_names = {}
+    count_level = 0
+    for name_lv in level_list:
+        if name_lv in dimensions:
+            level_names[name_lv] = dimensions.index(name_lv)
+            count_level = count_level + 1
+            if count_level >= 2:
+                break
+
+    if not level_names:
+        raise SKDSettingsError('invalid levels!')
+
+    # Создание настроек для джинджы по уровням
+    jinja_settings = {
+        'table_name': table_name,
+        'tables': [],
+        'order_by': [],
+        'db_name': skd_settings.get('db_name', None),
+    }
+
+    filters = skd_settings.get('filters', None)
+    if filters:
+        jinja_settings['filters'] = skd_filter_processing_settings(filters)
+
+    order_count = 0
+    for name_dim, ind in level_names.items():
+
+        if order_count == 0:
+            order_str = f'{order_count} as {DEFAULT_COLUMN_NAME_ORDER}'
+        else:
+            order_str = f'{order_count}'
+
+        fields = dimensions[:ind + 1]
+        if ind < (ln_dim - 1):
+            for _ in range(ind, ln_dim - 1):
+                fields.append('NULL')
+
+        fields.append(order_str)
+
+        for measure in mesures:
+            if measure.get('func', None):
+                field_str = f"{measure['func']}({measure['name']})"
+            else:
+                field_str = f"{measure['name']}"
+
+            fields.append(field_str)
+
+        table_settings = {
+            'fields': fields,
+            'group_fields': dimensions[:ind + 1],
+        }
+
+        jinja_settings['tables'].append(table_settings)
+        order_count = order_count + 1
+
+    jinja_settings['order_by'] = jinja_settings['tables'][0]['group_fields'].copy()
+    jinja_settings['order_by'].append(DEFAULT_COLUMN_NAME_ORDER)
+
+    return jinja_settings
+
+
+def skd_filter_processing_settings(filters):
+    """
+    Предварительная обработка филтров и их значений
+    """
+
+    new_filters = []
+
+    for filter in filters:
+        new_filter = {
+            'condition': filter.get('condition', None),
+            'union_start': filter.get('union_start', None),
+            'name': filter['name'],
+            'compare_func': filter.get('compare_func', None),
+            'value': skd_type_processing_filter(filter['value']),
+            'union_and': filter.get('union_and', None),
+        }
+
+        new_filters.append(new_filter)
+
+    return new_filters
+
+
+def skd_type_processing_filter(value):
+    """
+    Обработка значений и преобразование под селект
+    """
+
+    result = f'{value}'
+
+    if isinstance(value, str):
+        result = f"'{value}'"
+
+    elif isinstance(value, list):
+
+        jinja_str = """
+        (
+            {% set ns = namespace(first=False)  %}
+            {% for field in fields %}{% if ns.first %},
+            {% else %}{% set ns.first = True %}{% endif%}{{field}}{% endfor %}
+        )
+
+        """
+
+        new_values = []
+        for val in value:
+            new_values.append(skd_type_processing_filter(val))
+
+        render_data = {
+            'fields': new_values,
+        }
+
+        result = jinja_render_str_to_str(
+            str_pattern=jinja_str,
+            render=render_data
+        )
+
+    return result
+
 
 # # Пилотные тесты
 # if __name__ == '__main__':
