@@ -956,8 +956,8 @@ def skd_group_two_processing_settings_to_jinja(skd_settings):
 
         fields = dimensions[:ind + 1]
         if ind < (ln_dim - 1):
-            for _ in range(ind, ln_dim - 1):
-                fields.append('NULL')
+            for index_dim in range(ind, ln_dim - 1):
+                fields.append(f'NULL as {dimensions[index_dim+1]}')
 
         fields.append(order_str)
 
