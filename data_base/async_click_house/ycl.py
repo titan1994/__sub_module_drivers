@@ -15,7 +15,7 @@ DEFAULT_JINJA_PATTERN_META = Path(__file__).parent / 'get_meta.jinja'
 DEFAULT_JINJA_PATTERN_CREATE_TABLE = Path(__file__).parent / 'create_table.jinja'
 DEFAULT_JINJA_PATTERN_CREATE_DICT = Path(__file__).parent / 'create_dict.jinja'
 DEFAULT_JINJA_PATTERN_CREATE_MVIEW = Path(__file__).parent / 'create_mview.jinja'
-
+DEFAULT_JINJA_PATTERN_DELETE_DATA_TABLE = Path(__file__).parent / 'delete_data_table.jinja'
 # Паттерны универсальных селектов
 
 DEFAULT_JINJA_PATTERN_SELECT_SKD_TWO_GROUPS = Path(__file__).parent / 'select_skd_two_groups.jinja'
@@ -823,6 +823,54 @@ def modify_settings_preparation_value(value):
 
 
 """
+Удаление данных таблиц
+"""
+
+
+async def delete_data_from_table(conn, table, filter_data, db=None, cluster=None):
+    """
+    Удаляет данные, соответствующие указанному выражению фильтрации. Реализовано как мутация.
+    https://clickhouse.tech/docs/ru/sql-reference/statements/alter/delete/
+
+    ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr
+
+    filter_data = [
+        {
+            'name': 'type',
+            'value': 'Факт',
+        },
+        {
+            'union_start': True,
+            'name': 'organization',
+            'value': '6829004230',
+        },
+        {
+            'condition': 'OR',
+            'name': 'subject',
+            'compare_func': 'IN',
+            'value': ['65', '67'],
+            'union_and': True,
+        },
+    ]
+    """
+
+    render_data = {
+        'db_name': db,
+        'table_name': table,
+        'cluster': cluster,
+        'filters': skd_filter_processing_settings(filter_data),
+    }
+
+    res = await exec_req_from_file_jinja(
+        conn=conn,
+        jinja_pattern=DEFAULT_JINJA_PATTERN_DELETE_DATA_TABLE,
+        render_data=render_data
+    )
+
+    return res
+
+
+"""
 Хитрые/универсальные селекты, заслуживающие быть вписанными в драйвер
 """
 
@@ -959,7 +1007,7 @@ def skd_group_two_processing_settings_to_jinja(skd_settings):
             for index_dim in range(ind, ln_dim - 1):
 
                 if order_count == 0:
-                    fields.append(f'NULL as {dimensions[index_dim+1]}')
+                    fields.append(f'NULL as {dimensions[index_dim + 1]}')
                 else:
                     fields.append('NULL')
 
@@ -1047,7 +1095,6 @@ def skd_type_processing_filter(value):
         )
 
     return result
-
 
 # # Пилотные тесты
 # if __name__ == '__main__':
