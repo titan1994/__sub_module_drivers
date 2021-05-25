@@ -854,11 +854,16 @@ async def delete_data_from_table(conn, table, filter_data, db=None, cluster=None
     ]
     """
 
+    if not filter_data:
+        filters = []
+    else:
+        filters = filter_data
+
     render_data = {
         'db_name': db,
         'table_name': table,
         'cluster': cluster,
-        'filters': skd_filter_processing_settings(filter_data),
+        'filters': skd_filter_processing_settings(filters),
     }
 
     res = await exec_req_from_file_jinja(
