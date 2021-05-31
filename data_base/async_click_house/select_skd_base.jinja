@@ -24,7 +24,9 @@ FROM {% if select.db_name %}{{select.db_name}}.{% endif %}{{select.table}}
 
 {% if select.filters %}
 WHERE
-{% include 'included_filter_expr.jinja' %}
+ {% with filters=select.filters %}
+        {% include 'included_filter_expr.jinja' %}
+    {% endwith %}
 {% endif %}
 
 
