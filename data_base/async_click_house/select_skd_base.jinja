@@ -42,7 +42,7 @@ WHERE
 
     {% if select.having %}
         {% with filters=select.having %}
-        HAVING {% include 'included_having.jinja' %}
+        HAVING {% include 'included_filter_expr.jinja' %}
         {% endwith %}
     {% endif %}
 {% endif %}
