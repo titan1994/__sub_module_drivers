@@ -1126,12 +1126,13 @@ async def select_base(conn, data: dict):
         data['pre_filters'] = skd_filter_processing_settings(data['pre_filters'])
     if data.get('pre_filters', None) is not None:
         data['having'] = skd_filter_processing_settings(data['having'])
-
-    data['select'] = data
+    if data.get('fields', None) is not None:
+        data['fields'] = columns_processing(data['fields'])
+    render_data = {'select': data}
     res = await exec_req_from_file_jinja(
         conn=conn,
         jinja_pattern=DEFAULT_JINJA_PATTERN_SELECT_SKD_BASE,
-        render_data=data
+        render_data=render_data
     )
     return res
 
@@ -1148,12 +1149,30 @@ async def select_union(conn, union_data: dict):
             data['pre_filters'] = skd_filter_processing_settings(data['pre_filters'])
         if data.get('pre_filters', None) is not None:
             data['having'] = skd_filter_processing_settings(data['having'])
+        if data.get('fields', None) is not None:
+            data['fields'] = columns_processing(data['fields'])
     res = await exec_req_from_file_jinja(
         conn=conn,
         jinja_pattern=DEFAULT_JINJA_PATTERN_SELECT_SKD_UNION,
         render_data=union_data
     )
     return res
+
+def columns_processing(columns):
+    new_columns = []
+    for column in columns:
+        if column.get('expr', None):
+            new_column = column.get('expr')
+            new_columns.append(new_column)
+            continue
+        else:
+            new_column = column['name']
+            if column.get('func', None):
+                new_column = column.get("func")+f'({new_column})'
+            if column.get('alias', None):
+                new_column = new_column + ' as ' + column.get('alias')
+            new_columns.append(new_column)
+    return new_columns
 
 # # Пилотные тесты
 # if __name__ == '__main__':
