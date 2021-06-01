@@ -281,7 +281,7 @@ class KafkaProducerConfluent:
                 # flush вызывается под капотом commit_transaction
                 self.producer.commit_transaction(default_cfg.DEFAULT_TRANSACTION_TIMEOUT_SEC)
         else:
-            self.producer.flush(default_cfg.DEFAULT_TRANSACTION_TIMEOUT_SEC)
+            self.producer.flush(default_cfg.DEFAULT_FLUSH_TIMER_SEC)
 
         del self
 
