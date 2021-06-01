@@ -17,6 +17,8 @@ DEFAULT_JINJA_PATTERN_CREATE_DICT = Path(__file__).parent / 'create_dict.jinja'
 DEFAULT_JINJA_PATTERN_CREATE_MVIEW = Path(__file__).parent / 'create_mview.jinja'
 DEFAULT_JINJA_PATTERN_DELETE_DATA_TABLE = Path(__file__).parent / 'delete_data_table.jinja'
 # Паттерны универсальных селектов
+DEFAULT_JINJA_PATTERN_SELECT_SKD_BASE = Path(__file__).parent / 'select_skd_base.jinja'
+DEFAULT_JINJA_PATTERN_SELECT_SKD_UNION = Path(__file__).parent / 'select_union_all.jinja'
 
 DEFAULT_JINJA_PATTERN_SELECT_SKD_TWO_GROUPS = Path(__file__).parent / 'select_skd_two_groups.jinja'
 
@@ -1100,6 +1102,58 @@ def skd_type_processing_filter(value):
         )
 
     return result
+
+async def select_base(conn, data: dict):
+    """
+    Селект на основе шаблона jinja
+    params: data: dict
+    data = {
+        "table": "имя таблицы",
+        "columns": ["Имя колонки",...] default='*',
+        "distinct": "True\False",
+        "prewhere": "",
+        "where": "",
+        "gruup_by": "[Колонки]",
+        "having": "[Колонки]",
+        "limit": [value],
+        "limit": [value]
+        "union":[data]
+    }
+    """
+    if data.get('filters', None) is not None:
+        data['filters'] = skd_filter_processing_settings(data['filters'])
+    if data.get('pre_filters', None) is not None:
+        data['pre_filters'] = skd_filter_processing_settings(data['pre_filters'])
+    if data.get('pre_filters', None) is not None:
+        data['having'] = skd_filter_processing_settings(data['having'])
+
+    data['select'] = data
+    res = await exec_req_from_file_jinja(
+        conn=conn,
+        jinja_pattern=DEFAULT_JINJA_PATTERN_SELECT_SKD_BASE,
+        render_data=data
+    )
+    return res
+
+
+async def select_union(conn, union_data: dict):
+    """
+    Селект на основе шаблона jinja
+    params: data: array of dicts
+      """
+    for data in union_data['selects']:
+        if data.get('filters', None) is not None:
+            data['filters'] = skd_filter_processing_settings(data['filters'])
+        if data.get('pre_filters', None) is not None:
+            data['pre_filters'] = skd_filter_processing_settings(data['pre_filters'])
+        if data.get('pre_filters', None) is not None:
+            data['having'] = skd_filter_processing_settings(data['having'])
+    res = await exec_req_from_file_jinja(
+        conn=conn,
+        jinja_pattern=DEFAULT_JINJA_PATTERN_SELECT_SKD_UNION,
+        render_data=union_data
+    )
+    return res
 
 # # Пилотные тесты
 # if __name__ == '__main__':

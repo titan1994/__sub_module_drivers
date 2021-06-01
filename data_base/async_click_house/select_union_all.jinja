@@ -1,0 +1,9 @@
+
+{% set ns = namespace(first=False)  %}
+{% for select in selects %}{% if ns.first %}
+UNION {% if select.union %}
+    {{select.union}}
+{% endif %}
+{% else %}{% set ns.first = True %}{% endif%}
+        {% include 'select_skd_base.jinja' %}
+{% endfor %}

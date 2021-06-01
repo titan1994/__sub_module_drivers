@@ -1,0 +1,74 @@
+SELECT
+    {% set ns = namespace(first=False)  %}
+    {% for field in select.fields %}{% if ns.first %},
+    {% else %}{% set ns.first = True %}{% endif%}{{field}}{% endfor %}
+
+FROM {% if select.db_name %}{{select.db_name}}.{% endif %}{{select.table}}
+
+{% if select.sample %}
+    SAMPLE {{select.sample}}
+{% endif %}
+
+{% if select.offset %}
+    OFFSET {{select.offset}}
+{% endif %}
+
+{% if select.pre_filters %}
+    PREWHERE
+    {% with filters=select.pre_filters %}
+        {% include 'included_filter_expr.jinja' %}
+    {% endwith %}
+{% endif %}
+
+
+
+{% if select.filters %}
+WHERE
+ {% with filters=select.filters %}
+        {% include 'included_filter_expr.jinja' %}
+    {% endwith %}
+{% endif %}
+
+
+
+{% if select.group_by %}
+    GROUP BY (
+        {% set ns = namespace(first=False)  %}
+        {% for field in select.group_by %}{% if ns.first %},
+        {% else %}{% set ns.first = True %}{% endif%}{{field}}{% endfor %}
+    )
+
+    {% if select.group_by_with %}
+    WITH {{select.group_by_with}}
+    {% endif %}
+
+    {% if select.having %}
+        {% with filters=select.having %}
+        HAVING {% include 'included_filter_expr.jinja' %}
+        {% endwith %}
+    {% endif %}
+{% endif %}
+
+{% if select.order_by %}
+    ORDER BY (
+        {% set ns = namespace(first=False)  %}
+        {% for field in select.order_by %}{% if ns.first %},
+        {% else %}{% set ns.first = True %}{% endif%}{{field}}{% endfor %}
+    )
+{% endif %}
+
+{% if select.limit_by_values and select.limit_by_fields%}
+{% set ns = namespace(first=False)  %}
+    LIMIT {% for value in select.limit_by_values %}{% if ns.first %},
+      {% else %}{% set ns.first = True %}{% endif%}'{{value}}'{% endfor %}
+     BY {% for field in select.limit_by_fields %}{% if ns.first %}
+     {% else %}{% set ns.first = True %}{% endif%}{{field}}{% endfor %}
+{% endif %}
+
+{% if select.limit %}
+    LIMIT {{select.limit}}
+    {% if select.limit_with %}
+        WITH {{select.limit_with}}
+    {% endif %}
+{% endif %}
+
