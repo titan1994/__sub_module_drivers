@@ -197,7 +197,15 @@ class KafkaProducerConfluent:
     Инициализация
     """
 
-    def __init__(self, hosts=None, configuration=None, use_tx=False, one_topic_name=None):
+    def __init__(
+        self,
+        hosts=None,
+        configuration=None,
+        use_tx=False,
+        one_topic_name=None,
+        auto_flush_size=0,
+        flush_is_bad=False
+    ):
         """
 
         :param configuration:
@@ -226,12 +234,21 @@ class KafkaProducerConfluent:
         self.topic_parts = None
         self.one_topic_name = one_topic_name
 
+        if auto_flush_size:
+            self.auto_flush = True
+        else:
+            self.auto_flush = False
+
+        self.auto_flush_size = auto_flush_size
+        self.auto_flush_itr = 0
+        self.flush_is_bad = flush_is_bad
     """
     Контекст
     """
 
     def __enter__(self):
 
+        self.auto_flush_itr = 0
         self.producer = Producer(self.configuration)
         self.update_partition_settings(name_topic=self.one_topic_name)
 
@@ -255,6 +272,8 @@ class KafkaProducerConfluent:
         :param exc_tb:
         :return:
         """
+
+        self.auto_flush_itr = 0
         if self.use_tx:
             if exc_type:
                 self.producer.abort_transaction()
@@ -376,8 +395,28 @@ class KafkaProducerConfluent:
 
                 self.topic_part_itr[top_name] = current_position
 
-        self.producer.produce(**dict_args)
-        self.producer.poll(0)
+        if self.auto_flush:
+            # Авто-ожидание приёма буфера сообщений - третья версия
+
+            self.producer.produce(**dict_args)
+
+            self.auto_flush_itr = self.auto_flush_itr + 1
+            if self.auto_flush_itr >= self.auto_flush_size:
+                self.auto_flush_itr = 0
+                self.producer.flush(default_cfg.DEFAULT_FLUSH_TIMER_SEC)
+        else:
+            if self.flush_is_bad:
+                # Вторая версия алгоритма - флушить по факту
+                try:
+                    self.producer.produce(**dict_args)
+                    self.producer.poll(0)
+                except BufferError:
+                    #  Дожидаемся когда кафка разгребёт очередь
+                    self.producer.flush(default_cfg.DEFAULT_FLUSH_TIMER_SEC)
+            else:
+                # Первая версия
+                self.producer.produce(**dict_args)
+                self.producer.poll(0)
 
 
 class KafkaConsumer:
