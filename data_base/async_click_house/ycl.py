@@ -1159,6 +1159,12 @@ async def select_union(conn, union_data: dict):
     return res
 
 def columns_processing(columns):
+    """
+    Функция переработки параметров колонок в sql формат.
+    expr - вставляем как есть
+    ________
+    name, func, alias - параметры для обработки
+    """
     new_columns = []
     for column in columns:
         if column.get('expr', None):
