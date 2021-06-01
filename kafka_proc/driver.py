@@ -341,7 +341,7 @@ class KafkaProducerConfluent:
             self.topic_parts[name] = list_partitions
             self.topic_part_itr[name] = 0
 
-    def put_data(self, key, value, topic=None, callback=None, partition=None):
+    def put_data(self, key, value, topic=None, callback=None, partition=None, poll_time=0):
         """
         Поместить данные в очередь на обработку для брокера сообщений
         Чтобы не думать об этом - дампим в строку джсона сразу. Имя топика и ключа - строго строкой
@@ -364,7 +364,7 @@ class KafkaProducerConfluent:
             partition=partition
         )
 
-        self._put_data_default(dict_args=dict_args)
+        self._put_data_default(dict_args=dict_args, poll_time=poll_time)
 
     def _put_validation_and_transform(self, key, value, topic=None, callback=None, partition=None):
         """
@@ -413,7 +413,7 @@ class KafkaProducerConfluent:
 
         return dict_args
 
-    def _put_data_default(self, dict_args):
+    def _put_data_default(self, dict_args, poll_time=0):
         """
         Первоначальный замысел вставки с доработками
         """
@@ -422,7 +422,7 @@ class KafkaProducerConfluent:
             # Авто-ожидание приёма буфера сообщений - третья версия
 
             self.producer.produce(**dict_args)
-            self.producer.poll(0)
+            self.producer.poll(poll_time)
 
             self.auto_flush_itr = self.auto_flush_itr + 1
             if self.auto_flush_itr >= self.auto_flush_size:
@@ -433,14 +433,14 @@ class KafkaProducerConfluent:
                 # Вторая версия алгоритма - флушить по факту
                 try:
                     self.producer.produce(**dict_args)
-                    self.producer.poll(0)
+                    self.producer.poll(poll_time)
                 except BufferError:
                     #  Дожидаемся когда кафка разгребёт очередь
                     self.producer.flush(default_cfg.DEFAULT_FLUSH_TIMER_SEC)
             else:
                 # Первая версия
                 self.producer.produce(**dict_args)
-                self.producer.poll(0)
+                self.producer.poll(poll_time)
 
     def put_data_direct(self, key, value, topic=None, callback=None, partition=None):
         """
