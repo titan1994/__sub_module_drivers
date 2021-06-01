@@ -422,6 +422,7 @@ class KafkaProducerConfluent:
             # Авто-ожидание приёма буфера сообщений - третья версия
 
             self.producer.produce(**dict_args)
+            self.producer.poll(0)
 
             self.auto_flush_itr = self.auto_flush_itr + 1
             if self.auto_flush_itr >= self.auto_flush_size:
@@ -454,14 +455,22 @@ class KafkaProducerConfluent:
             partition=partition
         )
 
-        if self.flush_is_bad:
-            try:
-                self.producer.produce(**dict_args)
-            except BufferError:
-                #  Дожидаемся когда кафка разгребёт очередь
+        if self.auto_flush:
+            self.producer.produce(**dict_args)
+
+            self.auto_flush_itr = self.auto_flush_itr + 1
+            if self.auto_flush_itr >= self.auto_flush_size:
+                self.auto_flush_itr = 0
                 self.producer.flush(default_cfg.DEFAULT_FLUSH_TIMER_SEC)
         else:
-            self.producer.produce(**dict_args)
+            if self.flush_is_bad:
+                try:
+                    self.producer.produce(**dict_args)
+                except BufferError:
+                    #  Дожидаемся когда кафка разгребёт очередь
+                    self.producer.flush(default_cfg.DEFAULT_FLUSH_TIMER_SEC)
+            else:
+                self.producer.produce(**dict_args)
 
 
 class KafkaConsumer:
