@@ -197,7 +197,15 @@ class KafkaProducerConfluent:
     Инициализация
     """
 
-    def __init__(self, hosts=None, configuration=None, use_tx=False, one_topic_name=None):
+    def __init__(
+            self,
+            hosts=None,
+            configuration=None,
+            use_tx=False,
+            one_topic_name=None,
+            auto_flush_size=0,
+            flush_is_bad=False
+    ):
         """
 
         :param configuration:
@@ -226,12 +234,22 @@ class KafkaProducerConfluent:
         self.topic_parts = None
         self.one_topic_name = one_topic_name
 
+        if auto_flush_size:
+            self.auto_flush = True
+        else:
+            self.auto_flush = False
+
+        self.auto_flush_size = auto_flush_size
+        self.auto_flush_itr = 0
+        self.flush_is_bad = flush_is_bad
+
     """
     Контекст
     """
 
     def __enter__(self):
 
+        self.auto_flush_itr = 0
         self.producer = Producer(self.configuration)
         self.update_partition_settings(name_topic=self.one_topic_name)
 
@@ -255,6 +273,8 @@ class KafkaProducerConfluent:
         :param exc_tb:
         :return:
         """
+
+        self.auto_flush_itr = 0
         if self.use_tx:
             if exc_type:
                 self.producer.abort_transaction()
@@ -262,7 +282,7 @@ class KafkaProducerConfluent:
                 # flush вызывается под капотом commit_transaction
                 self.producer.commit_transaction(default_cfg.DEFAULT_TRANSACTION_TIMEOUT_SEC)
         else:
-            self.producer.flush(default_cfg.DEFAULT_TRANSACTION_TIMEOUT_SEC)
+            self.producer.flush(default_cfg.DEFAULT_FLUSH_TIMER_SEC)
 
         del self
 
@@ -321,7 +341,7 @@ class KafkaProducerConfluent:
             self.topic_parts[name] = list_partitions
             self.topic_part_itr[name] = 0
 
-    def put_data(self, key, value, topic=None, callback=None, partition=None):
+    def put_data(self, key, value, topic=None, callback=None, partition=None, poll_time=0):
         """
         Поместить данные в очередь на обработку для брокера сообщений
         Чтобы не думать об этом - дампим в строку джсона сразу. Имя топика и ключа - строго строкой
@@ -334,6 +354,21 @@ class KafkaProducerConfluent:
 
         :param callback: func(err, msg): if err is not None...
         :return:
+        """
+
+        dict_args = self._put_validation_and_transform(
+            key=key,
+            value=value,
+            topic=topic,
+            callback=callback,
+            partition=partition
+        )
+
+        self._put_data_default(dict_args=dict_args, poll_time=poll_time)
+
+    def _put_validation_and_transform(self, key, value, topic=None, callback=None, partition=None):
+        """
+        Для разных алгоритмов вставки - формирует словарь аргументов вставки
         """
 
         if topic is None and self.one_topic_name is None:
@@ -376,8 +411,66 @@ class KafkaProducerConfluent:
 
                 self.topic_part_itr[top_name] = current_position
 
-        self.producer.produce(**dict_args)
-        self.producer.poll(0)
+        return dict_args
+
+    def _put_data_default(self, dict_args, poll_time=0):
+        """
+        Первоначальный замысел вставки с доработками
+        """
+
+        if self.auto_flush:
+            # Авто-ожидание приёма буфера сообщений - третья версия
+
+            self.producer.produce(**dict_args)
+            self.producer.poll(poll_time)
+
+            self.auto_flush_itr = self.auto_flush_itr + 1
+            if self.auto_flush_itr >= self.auto_flush_size:
+                self.auto_flush_itr = 0
+                self.producer.flush(default_cfg.DEFAULT_FLUSH_TIMER_SEC)
+        else:
+            if self.flush_is_bad:
+                # Вторая версия алгоритма - флушить по факту
+                try:
+                    self.producer.produce(**dict_args)
+                    self.producer.poll(poll_time)
+                except BufferError:
+                    #  Дожидаемся когда кафка разгребёт очередь
+                    self.producer.flush(default_cfg.DEFAULT_FLUSH_TIMER_SEC)
+            else:
+                # Первая версия
+                self.producer.produce(**dict_args)
+                self.producer.poll(poll_time)
+
+    def put_data_direct(self, key, value, topic=None, callback=None, partition=None):
+        """
+        Прямая вставка с преобразованием данных. Метод poll не используется
+        """
+
+        dict_args = self._put_validation_and_transform(
+            key=key,
+            value=value,
+            topic=topic,
+            callback=callback,
+            partition=partition
+        )
+
+        if self.auto_flush:
+            self.producer.produce(**dict_args)
+
+            self.auto_flush_itr = self.auto_flush_itr + 1
+            if self.auto_flush_itr >= self.auto_flush_size:
+                self.auto_flush_itr = 0
+                self.producer.flush(default_cfg.DEFAULT_FLUSH_TIMER_SEC)
+        else:
+            if self.flush_is_bad:
+                try:
+                    self.producer.produce(**dict_args)
+                except BufferError:
+                    #  Дожидаемся когда кафка разгребёт очередь
+                    self.producer.flush(default_cfg.DEFAULT_FLUSH_TIMER_SEC)
+            else:
+                self.producer.produce(**dict_args)
 
 
 class KafkaConsumer:
