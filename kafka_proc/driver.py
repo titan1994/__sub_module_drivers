@@ -198,13 +198,13 @@ class KafkaProducerConfluent:
     """
 
     def __init__(
-        self,
-        hosts=None,
-        configuration=None,
-        use_tx=False,
-        one_topic_name=None,
-        auto_flush_size=0,
-        flush_is_bad=False
+            self,
+            hosts=None,
+            configuration=None,
+            use_tx=False,
+            one_topic_name=None,
+            auto_flush_size=0,
+            flush_is_bad=False
     ):
         """
 
@@ -242,6 +242,7 @@ class KafkaProducerConfluent:
         self.auto_flush_size = auto_flush_size
         self.auto_flush_itr = 0
         self.flush_is_bad = flush_is_bad
+
     """
     Контекст
     """
@@ -355,6 +356,21 @@ class KafkaProducerConfluent:
         :return:
         """
 
+        dict_args = self._put_validation_and_transform(
+            key=key,
+            value=value,
+            topic=topic,
+            callback=callback,
+            partition=partition
+        )
+
+        self._put_data_default(dict_args=dict_args)
+
+    def _put_validation_and_transform(self, key, value, topic=None, callback=None, partition=None):
+        """
+        Для разных алгоритмов вставки - формирует словарь аргументов вставки
+        """
+
         if topic is None and self.one_topic_name is None:
             raise AttributeError('NEED TOPIC NAME!')
 
@@ -395,6 +411,13 @@ class KafkaProducerConfluent:
 
                 self.topic_part_itr[top_name] = current_position
 
+        return dict_args
+
+    def _put_data_default(self, dict_args):
+        """
+        Первоначальный замысел вставки с доработками
+        """
+
         if self.auto_flush:
             # Авто-ожидание приёма буфера сообщений - третья версия
 
@@ -417,6 +440,28 @@ class KafkaProducerConfluent:
                 # Первая версия
                 self.producer.produce(**dict_args)
                 self.producer.poll(0)
+
+    def put_data_direct(self, key, value, topic=None, callback=None, partition=None):
+        """
+        Прямая вставка с преобразованием данных. Метод poll не используется
+        """
+
+        dict_args = self._put_validation_and_transform(
+            key=key,
+            value=value,
+            topic=topic,
+            callback=callback,
+            partition=partition
+        )
+
+        if self.flush_is_bad:
+            try:
+                self.producer.produce(**dict_args)
+            except BufferError:
+                #  Дожидаемся когда кафка разгребёт очередь
+                self.producer.flush(default_cfg.DEFAULT_FLUSH_TIMER_SEC)
+        else:
+            self.producer.produce(**dict_args)
 
 
 class KafkaConsumer:
