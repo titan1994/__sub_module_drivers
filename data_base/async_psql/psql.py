@@ -7,8 +7,10 @@ import asyncpg
 from pathlib import Path
 from MODS.scripts.python.jinja import jinja_render_to_str, jinja_render_str_to_str
 from ..metadata import psql_cl_convertations
+from ..async_click_house.ycl import skd_filter_processing_settings
 
 DEFAULT_JINJA_PATTERN_META = Path(__file__).parent / 'get_meta.jinja'
+DEFAULT_JINJA_PATTERN_LEFT_JOIN_SIMPLE = Path(__file__).parent / 'select_left_join_simple.jinja'
 
 """
 Обобщённый функционал
@@ -91,7 +93,6 @@ async def exec_req_from_file_jinja(conn, jinja_pattern, render_data, jinja_folde
         **conn,
         text_req=sql_pattern
     )
-
     return res
 
 
@@ -151,3 +152,38 @@ async def get_tables_from_database(host, port, user, password, database, table_f
     )
 
     return res
+
+"""
+Выборки
+"""
+async def get_left_join_simple(conn, render_data):
+    """
+    Сделать простую выборку с left join
+
+    render_data: dict = {
+            left_fields: list (список полей левой таблицы)
+            right_fields: list (список полей правой таблицы)
+            table_left_short: str (короткое название левой таблицы, не обязательно)
+            table_right_short: str (короткое название правой таблицы)
+            table_right_short: str (короткое название правой таблицы)
+            filters: list (filters)
+            table_right: str (полное название правой таблицы)
+            table_left: str (полное название левой таблицы)
+            field_left: str (название поля правой таблицы, которое приравняется в ON)
+            field_right: str (название поля левой таблицы, которое приравняется в ON)
+        }
+    """
+    jinja_pattern = DEFAULT_JINJA_PATTERN_LEFT_JOIN_SIMPLE
+    render_data['fields'] = []
+    render_data['table_left_short'] = render_data.get('table_left_short', 'left_table')
+    render_data['table_right_short'] = render_data.get('table_right_short', 'right_table')
+    for left_field in render_data.get('left_fields', []):
+        render_data['fields'].append(render_data.get('table_left_short')+'.'+left_field)
+    for right_field in render_data.get('right_fields', []):
+        render_data['fields'].append(render_data.get('table_right_short')+'.'+right_field)
+    if render_data.get('filters', None) is not None:
+        render_data['filters'] = skd_filter_processing_settings(render_data['filters'])
+
+    result = await exec_req_from_file_jinja(conn, jinja_pattern, render_data)
+
+    return result

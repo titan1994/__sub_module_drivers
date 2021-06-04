@@ -1,0 +1,18 @@
+SELECT
+    {% if distinct %}
+    distinct {{distinct}},
+    {% endif %}
+    {% set ns = namespace(first=False)  %}
+    {% for field in fields %}{% if ns.first %},
+    {% else %}{% set ns.first = True %}{% endif%}{{field}}{% endfor %}
+
+FROM {{table_left}} {{table_left_short}}
+LEFT OUTER JOIN {{table_right}} {{table_right_short}}
+ON {{table_left_short}}.{{field_left}}={{table_right_short}}.{{field_right}}
+
+{% if filters %}
+    WHERE
+     {% with filters=filters %}
+     {% include 'included_filter_expr.jinja' %}
+     {% endwith %}
+{% endif %}
