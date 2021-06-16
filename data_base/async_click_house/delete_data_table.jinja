@@ -1,10 +1,10 @@
+{% if filters %}
 ALTER TABLE {% if db_name %}{{db_name}}.{% endif %}{{table_name}} {% if cluster %}ON CLUSTER {{cluster}}{% endif %}
 DELETE
-{% if filters %}
+
 WHERE
 {% include 'included_filter_expr.jinja' %}
 
 {% else %}
-WHERE
-1
+TRUNCATE TABLE {% if db_name %}{{db_name}}.{% endif %}{{table_name}} {% if cluster %}ON CLUSTER {{cluster}}{% endif %}
 {% endif %}
