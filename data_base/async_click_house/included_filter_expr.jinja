@@ -1,7 +1,8 @@
     {% set ns = namespace(first=False)  %}
     {% for filter in filters %}
-    {% if ns.first %}{% if filter.get('condition', None) %}{{filter['condition']}}{% else %}AND{% endif %}
     {% if filter.get('union_start', None) %}({% endif %}
-    {% else %}{% set ns.first = True %}{% endif%}{{filter['name']}} {% if filter.get('compare_func', None) %}{{filter['compare_func']}}{% else %}=={% endif %} {{filter['value']}}
+    {% if ns.first %}{% if filter.get('condition', None) %}{{filter['condition']}}{% else %}AND{% endif %}
+    {% else %}
+    {% set ns.first = True %}{% endif%}{{filter['name']}} {% if filter.get('compare_func', None) %}{{filter['compare_func']}}{% else %}=={% endif %} {{filter['value']}}
     {% if filter.get('union_and', None) %}){% endif %}
     {% endfor %}

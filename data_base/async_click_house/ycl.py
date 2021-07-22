@@ -851,7 +851,7 @@ async def delete_data_from_table(conn, table, filter_data, db=None, cluster=None
             'name': 'subject',
             'compare_func': 'IN',
             'value': ['65', '67'],
-            'union_and': True,
+            'union_end': True,
         },
     ]
     """
@@ -931,7 +931,7 @@ async def select_skd_two_groups(conn, data_select):
                 'name': 'subject',
                 'compare_func': 'IN',
                 'value': ['65', '67'],
-                'union_and': True,
+                'union_end': True,
             },
         ]
 
@@ -1059,7 +1059,7 @@ def skd_filter_processing_settings(filters):
             'name': filter['name'],
             'compare_func': filter.get('compare_func', None),
             'value': skd_type_processing_filter(filter['value']),
-            'union_and': filter.get('union_and', None),
+            'union_end': filter.get('union_end', None),
         }
 
         new_filters.append(new_filter)
